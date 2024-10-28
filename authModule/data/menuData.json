@@ -1,0 +1,26 @@
+[
+    {
+        "menuId": 1,
+        "menuNm": "마이페이지",
+        "menuPath": "/myPage",
+        "isTab": true,
+        "upperMenuId" : 0,
+        "authTypeCode": "C,R,U,D"
+    },
+    {
+        "menuId": 2,
+        "menuNm": "회원정보 탭",
+        "menuPath": "/myPage/infoTab",
+        "isTab": true,
+        "upperMenuId" : 1,
+        "authTypeCode": "C,R,U"
+    },
+    {
+        "menuId": 2,
+        "menuNm": "회원이력 탭",
+        "menuPath": "/myPage/historyTab",
+        "isTab": true,
+        "upperMenuId" : 1,
+        "authTypeCode": "R"
+    }
+]
