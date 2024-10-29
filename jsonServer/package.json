@@ -1,0 +1,12 @@
+{
+  "name": "json-server",
+  "private": true,
+  "type": "commonjs",
+  "description": "json-server용 패키지",
+  "scripts": {
+    "dbserve": "json-server --watch db.json --middlewares server.js --routes routes.json --port 6468 --id idx"
+  },
+  "dependencies": {
+    "json-server": "^0.17.4"
+  }
+}

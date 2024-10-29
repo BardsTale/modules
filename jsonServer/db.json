@@ -1,0 +1,252 @@
+{
+  "init": {
+    "profile": {
+      "kor_name": "조새나라",
+      "eng_name": "Cho Saenara",
+      "mail": "civu@nate.com",
+      "github": "https://github.com/BardsTale",
+      "hobby": "신화 및 역사 관련 서적 독서, 야구, 축구 등 각종 스포츠 관람."
+    },
+    "project": [
+      {
+        "company": "ncits",
+        "project_name": "공통 프로세스 모듈 개발",
+        "project_date": "2023.01 ~ 2023.09",
+        "client": "NC ITS",
+        "platform": "Web",
+        "remark": "매 프로모션마다 공통되는 프로세스 로직을 모듈화 하여 반복되는 코드를 없애고 및 개발 시간을 단축하고자 도입.",
+        "contribution": 80,
+        "project_eng": "processModule"
+      },
+      {
+        "company": "ncits",
+        "project_name": "다국어 페이지 개발 기준안 작성",
+        "project_date": "2022.10 ~ 2023.04",
+        "client": "NC ITS",
+        "remark": "4개 국어를 지원하는 리니지W 프로모션 및 브랜드웹 페이지 개발을 위해서 효율적인 구조의 보일러 플레이트 및 개발 방법의 필요성이 대두되어 기준안 작성.",
+        "contribution": 100,
+        "project_eng": "global"
+      },
+      {
+        "company": "ncits",
+        "project_name": "사내 FE개발 환경 마이그레이션",
+        "project_date": "2022.01 ~ 2022.09",
+        "client": "NC ITS",
+        "remark": "프론트엔드 개발 환경을 JQuery와 gulp 태스크 러너 개발 환경에서 Vue.js를 도입하여 보다 모던한 개발 환경으로 마이그레이션을 수행.",
+        "contribution": 100,
+        "project_eng": "vue"
+      },
+      {
+        "company": "ncits",
+        "project_name": "비즈니스 로직 FE 파트로 이관",
+        "project_date": "2021.12 ~ 2022.01",
+        "client": "NC ITS",
+        "remark": "기존의 프론트 방면 비즈니스 로직을 백엔드 파트에서 개발하던 것을 FE 파트로 이관하는 작업 수행.",
+        "contribution": 100,
+        "project_eng": "logic"
+      },
+      {
+        "company": "chunil",
+        "project_name": "KD Fine chem 성적서 관리 시스템",
+        "project_date": "2020.10 ~ 2021.06",
+        "client": "KD Fine chem",
+        "platform": "Web",
+        "remark": "KD Fine chem 사의 제품 품질 성적서 관리 시스템.\r\n신규 법인 설립과 함께 신 사업으로 인한 업무 프로세스 변경과 \r\n해외 법인의 프로그램 사용에 따라 새로운 성적서 시스템 개발을 요청하여 설계부터 개발까지 새로이 진행하여 개발.",
+        "contribution": 100,
+        "project_eng": "kdtr"
+      },
+      {
+        "company": "chunil",
+        "project_name": "천일아이엔씨 코드 리뷰 도입",
+        "project_date": "2020.02 ~ 2021.06",
+        "client": "천일아이엔씨",
+        "platform": "복합",
+        "remark": "각 팀의 사용기술 공유와 코드 품질의 이슈를 개선하고 다방면의 기술 동향을 접하기 위해 도입.\r\n매주 1일 1~2시간씩 발표자를 선정하여 사원 ~ 대리급 대상 코드 리뷰 실시.\r\n* 코드리뷰 깃허브 : <a href=\"https://github.com/code1001inc/codeReview\" target=\"_blank\">링크</a>",
+        "contribution": 70,
+        "project_eng": "incodereview"
+      },
+      {
+        "company": "chunil",
+        "project_name": "극동제연 사업계획 시스템",
+        "project_date": "2019.10 ~ 2020.08",
+        "client": "극동제연(주)",
+        "platform": "Web",
+        "remark": "회기별 각 부서의 사업계획 및 실적을 업로드, 관리하여 수익성 분석 지수 표출.\r\n고객이 사용 중인 영림원 ERP와 인터페이스 하여 사용.\r\n기수와 기준 정보 버전이라는 개념을 도입하여 시점별 정확한 사업계획 자료를 도출.",
+        "contribution": 80,
+        "project_eng": "kukdong"
+      },
+      {
+        "company": "chunil",
+        "project_name": "부관훼리 인사급여 시스템",
+        "project_date": "2019.04 ~ 2020.04",
+        "client": "부관훼리",
+        "platform": "C/S",
+        "remark": "부관훼리 인사급여 시스템 개발, 마이그레이션을 동반한 신규 개발.\r\n1차로 Delphi 10으로 마이그레이션을 진행, 2차로 연말정산을 포함한 신규 프로그램 개발.",
+        "contribution": 30,
+        "project_eng": "pukwan"
+      },
+      {
+        "company": "chunil",
+        "project_name": "천일 안전 관리 시스템",
+        "project_date": "2019.03 ~ 2019.10",
+        "client": "천일정기화물자동차",
+        "platform": "Web, Mobile Web",
+        "remark": "천일정기화물자동차 각 사업부 및 계열사의 중장비 기기, 소방, 시설, 건물의 현황을 관리.\r\n각 관리 포인트의 일일 안전 점검표, 중장비 주유량 등 에너지 소비량을 작성하여 자산의 안전 관리와\r\n원가 절감 자료 활용을 위해 개발된 프로젝트.\r\n웹 버전 개발 후 실질적인 사용자가 협력업체의 작업자인 관계로 모바일 버전의 필요성이 제기되어 모바일 버전 개발.\r\n기간 상 IOS와 안드로이드 두 종류의 앱 개발이 어려워 둘 다 호환이 가능하고\r\n기존의 프로그램을 활용할 수 있어 빠르게 개발이 가능한 반응형 웹을 통해 모바일 웹 버전으로 작성.",
+        "contribution": 90,
+        "project_eng": "chunilsafe"
+      },
+      {
+        "company": "chunil",
+        "project_name": "천일아이엔씨 신규 웹 표준안 발의 및 1차 개발",
+        "project_date": "2018.10 ~ 2019.03",
+        "client": "천일아이엔씨",
+        "platform": "Web",
+        "remark": "노후화된 회사의 웹 프로젝트 개발 환경을 전반적으로 개선하기 위한 신규 웹 표준안 발의 및 개발.\r\n최초 안건 발의 -> 공론화 -> 웹 표준 기술 공청회 -> 프로토타입 개발의 과정을 거쳐 진행.\r\n프론트엔드, 백엔드 프레임워크, 형상관리시스템 등 프로젝트 다방면의 웹 표준 기술들 채택.",
+        "contribution": 60,
+        "project_eng": "webstandard"
+      },
+      {
+        "company": "chunil",
+        "project_name": "STLC WMS 시스템",
+        "project_date": "2017.05 ~ 2017.12",
+        "client": "STLC",
+        "platform": "Web",
+        "remark": "STLC사의 Warehouse Management System, 프로젝트 중반에 입사하여 개발한 프로젝트.\r\n바코드 시스템을 사용하여 제품의 입고 ~ 출고까지 이어지는 일련의 과정들을 기본적으로 제공하며\r\n제품별 재고관리, 제품의 로케이션 관리 등의 부가적인 기능과 Data를 분석한 KPI 지수 시각화 프로그램까지 추가 개발.",
+        "contribution": 40,
+        "project_eng": "stlc"
+      }
+    ],
+    "article": [
+      {
+        "DATE": "2020-07",
+        "LINK": "https://github.com/BardsTale/codingArticle/blob/main/1_%EC%BF%A0%ED%82%A4%20%EC%84%B8%EC%85%98%20%EC%9B%B9%EC%8A%A4%ED%86%A0%EB%A6%AC%EC%A7%80%20%EC%BA%90%EC%8B%9C.pdf",
+        "TITLE": "쿠키 세션 웹스토리지 캐시",
+        "TYPE": "공통",
+        "REMARK": "쿠키, 세션, 웹스토리지, 캐시, JWT등 웹 브라우저 저장소와 관련된 글입니다.",
+        "SEQ": 1
+      },
+      {
+        "DATE": "2020-08",
+        "LINK": "https://github.com/BardsTale/codingArticle/blob/main/2_SSR%EA%B3%BC%20CSR.pdf",
+        "TITLE": "SSR과 CSR",
+        "TYPE": "프론트엔드",
+        "REMARK": "SSR과 CSR이 무엇인지, 서로의 장단점과 SEO 등에 대한 설명 그리고 렌더링 관점에서의 동향에 관한 글입니다.",
+        "SEQ": 2
+      },
+      {
+        "DATE": "2020-08",
+        "LINK": "https://github.com/BardsTale/codingArticle/blob/main/3_Modern%20JavaScript.pdf",
+        "TITLE": "Modern JavaScript",
+        "TYPE": "프론트엔드",
+        "REMARK": "모던 자바스크립트이 무엇인지 프론트엔드방면의 개발 동향과 함께 설명하는 글입니다.",
+        "SEQ": 3
+      },
+      {
+        "DATE": "2020-12",
+        "LINK": "https://github.com/BardsTale/codingArticle/blob/main/4_REST%20%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98.pdf",
+        "TITLE": "REST 아키텍처",
+        "TYPE": "공통",
+        "REMARK": "REST 아키텍처의 태동, HTTP 메소드에 대한 설명 등이 담긴 글입니다.",
+        "SEQ": 4
+      },
+      {
+        "DATE": "2021-01",
+        "LINK": "https://github.com/BardsTale/codingArticle/blob/main/5_Java%20EE%20%EC%82%AC%EC%96%91%EB%B3%84%20WAS%20%EB%B9%84%EA%B5%90%20%EB%B6%84%EC%84%9D.pdf",
+        "TITLE": "Java EE 사양별 WAS 비교 분석",
+        "TYPE": "데브옵스",
+        "REMARK": "Java EE 사양별 WAS의 비용과 스펙에 대한 정보글입니다.",
+        "SEQ": 5
+      },
+      {
+        "DATE": "2021-02",
+        "LINK": "https://github.com/BardsTale/codingArticle/blob/main/6_%EA%B0%9D%EC%B2%B4%EC%9D%98%20%EA%B9%8A%EC%9D%80%20%EB%B3%B5%EC%82%AC%EC%99%80%20%EC%96%95%EC%9D%80%20%EB%B3%B5%EC%82%AC.pdf",
+        "TITLE": "객체의 깊은 복사와 얕은 복사",
+        "TYPE": "프론트엔드",
+        "REMARK": "객체의 깊은 복사와 얕은 복사의 특징과 이에 대한 유의점, 처리 방법에 대한 글입니다.",
+        "SEQ": 6
+      },
+      {
+        "DATE": "2021-05",
+        "LINK": "https://github.com/BardsTale/codingArticle/blob/main/7_%EB%8F%84%EC%BB%A4%EC%99%80%20%EC%BF%A0%EB%B2%84%EB%84%A4%ED%8B%B0%EC%8A%A4.pdf",
+        "TITLE": "도커와 쿠버네티스",
+        "TYPE": "데브옵스",
+        "REMARK": "배포 생태계의 변화를 시작으로 도커와 쿠버네티스에 대한 설명과 기능, 스펙에 대한 설명을 요약한 글입니다.",
+        "SEQ": 7
+      },
+      {
+        "DATE": "2022-01",
+        "LINK": "https://github.com/BardsTale/codingArticle/blob/main/%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C%20%ED%94%84%EB%A0%88%EC%9E%84%EC%9B%8C%ED%81%AC%20%EB%B9%84%EA%B5%90%EB%B6%84%EC%84%9D.pdf",
+        "TITLE": "프론트엔드 프레임워크 비교분석",
+        "TYPE": "프론트엔드",
+        "REMARK": "프론트엔드 프레임워크 4종(angular, react, vue, svelte)에 대한 비교 분석글입니다.",
+        "SEQ": 8
+      },
+      {
+        "DATE": "2022-07",
+        "LINK": "https://github.com/BardsTale/codingArticle/blob/main/Vue%20%EB%B9%84%EB%8F%99%EA%B8%B0%20%EC%97%85%EB%8D%B0%EC%9D%B4%ED%8A%B8%20%ED%81%90.md",
+        "TITLE": "비동기 업데이트 큐",
+        "TYPE": "프론트엔드",
+        "REMARK": "vue의 DOM 비동기 업데이트 queue에 대한 작동원리를 설명한 글입니다.",
+        "SEQ": 9
+      },
+      {
+        "DATE": "2023-01",
+        "LINK": "https://github.com/BardsTale/codingArticle/blob/main/Vue%20%EA%B0%9C%EB%B0%9C%EA%B7%9C%EC%95%BD.md",
+        "TITLE": "Vue 개발규약",
+        "TYPE": "프론트엔드",
+        "REMARK": "Vue 공식 스타일 가이드를 참고한 개발규약입니다.",
+        "SEQ": 10
+      },
+      {
+        "DATE": "2023-06",
+        "LINK": "https://github.com/BardsTale/codingArticle/blob/main/%EC%95%84%EC%9D%BC%EB%9E%9C%EB%93%9C%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98.pdf",
+        "TITLE": "아일랜드 아키텍처",
+        "TYPE": "프론트엔드",
+        "REMARK": "프론트엔드 방면의 새로운 아키텍처인 아일랜드 아키텍처에 대한 설명과 마이크로 프론트엔드와의 차이점 등을 설명한 글입니다.",
+        "SEQ": 11
+      },
+      {
+        "DATE": "2024-05",
+        "LINK": "https://github.com/BardsTale/codingArticle/blob/main/12_MSA%20MFE.pdf",
+        "TITLE": "MSA? MFE?",
+        "TYPE": "공통",
+        "REMARK": "마이크로서비스의 개념과 함께 백엔드 방면의 MSA와 프론트엔드 방면의 MFE에 대해서 설명하는 글입니다.",
+        "SEQ": 12
+      }
+    ],
+    "skill": [
+      {
+        "SKILL_NAME": "vue.js",
+        "SKILL_GBN": "frontEnd"
+      },
+      {
+        "SKILL_NAME": "javascript",
+        "SKILL_GBN": "frontEnd"
+      },
+      {
+        "SKILL_NAME": "java",
+        "SKILL_GBN": "backEnd"
+      }
+    ],
+    "frontSkillCount": 3,
+    "backSkillCount": 0
+  },
+  "skillBackData": [
+    {
+      "SKILL_NAME": "vue.js",
+      "SKILL_GBN": "frontEnd"
+    },
+    {
+      "SKILL_NAME": "javascript",
+      "SKILL_GBN": "frontEnd"
+    },
+    {
+      "SKILL_NAME": "java",
+      "SKILL_GBN": "backEnd"
+    },
+    {
+      "SKILL_NAME": "typescript",
+      "SKILL_GBN": "backEnd"
+    }
+  ]
+}
