@@ -18,7 +18,6 @@
       <draggable
         v-model="localValue.children"
         :class="'q-tree__node-collapsible--ghost'"
-        ghost-class="ghost"
         :group="group"
         :data-depth="localValue.depth"
         :data-menu-id="localValue.menuId"
@@ -27,7 +26,7 @@
         @start="onDragStart"
         @end="onDragEnd"
       >
-        <transition-group type="transition" :name="!drag ? 'flip-list' : null">
+        <transition-group type="transition" :name="!drag ? 'flip-list' : undefined">
           <QDraggableTreeNode
             v-for="(item, idx) in localValue.children"
             :key="item.id"
@@ -57,6 +56,7 @@
 import { ref, computed, watch, useSlots, inject, onMounted} from 'vue';
 import { VueDraggableNext as Draggable } from 'vue-draggable-next';
 import QDraggableTreeNode from './QDraggableTreeNode.vue';
+import { DragStartEvent, DragEndEvent, TreeData, FlexibleObject } from '../types/tree-interface.ts';
 
 const props = defineProps({
   value: {
@@ -77,21 +77,23 @@ const props = defineProps({
   },
   treeKey: {
     type: Number,
+    required: true
   },
   seqIdx: {
-    type: Number
+    type: Number,
+    required: true
   },
   isOpen: {
     type: Boolean
   },
   checkCondition: {
-    type: Function
+    type: Function,
   }
 });
 
 /* 컴포넌트 이니셜라이징 */
 const emit = defineEmits(['setOriginData', 'resetTreeData', 'setTreeData']);
-const saveDragItem = inject('saveDragItem');
+const saveDragItem = inject('saveDragItem') as Function;
 
 const open = ref(false);
 const drag = ref(false);
@@ -106,7 +108,6 @@ const hasDefaultSlot = computed(() => {
 
 const dragOptions = computed(() => ({
   animation: 200,
-  group: 'description',
   ghostClass: 'ghost'
 }));
 
@@ -121,11 +122,11 @@ onMounted(()=>{
 })
 
 /* 드래그 제어 */
-const dragItem = ref({}); // 현재 드래그중인 아이템
-const draggingItemIndex = ref(null); //  현재 드래그 인덱스
+const dragItem = ref<TreeData|FlexibleObject>(); // 현재 드래그중인 아이템
+const draggingItemIndex = ref(0); //  현재 드래그 인덱스
 
 // 드래그 시작 이벤트
-const onDragStart = (event) => {
+const onDragStart = (event: DragEndEvent) => {
   dragItem.value = localValue.value.children[event.oldIndex]; // 현재 드래그 아이템 저장
   // 드래그 시작 시 원본 상태 저장
   emit('setOriginData',props.treeKey); // 상위 컴포넌트에게 오리진 저장 요청
@@ -135,20 +136,20 @@ const onDragStart = (event) => {
 };
 
 // 드래그 종료 이벤트
-const isConditionMet = ref(0);
-const onDragEnd = (event) => {
-  // 드래그 종료 시 조건 검사
-  isConditionMet.value = checkCondition(dragItem.value, event.from.dataset.depth, event.to.dataset.depth, event.from.dataset.cmmu == 'true' || event.to.dataset.cmmu == 'true');
+const isConditionMet = ref(false);
+const onDragEnd = (event: DragEndEvent) => {
+  // 드래그 종료 시 조건 검사, props에서 체크 컨디션 콜백을 받았을 경우.
+  if(props.checkCondition) isConditionMet.value = props.checkCondition(dragItem.value, event.from.dataset.depth, event.to.dataset.depth, event.from.dataset.cmmu == 'true' || event.to.dataset.cmmu == 'true');
   if (isConditionMet.value)  {
     // 조건이 충족되면 드래그 취소하고 원복
     emit('resetTreeData',props.treeKey); // 상위 컴포넌트에게 롤백 요청
     resetTreeData(); // 현재 롤백 처리
   } else {
     // 변경점이 없지 않은 경우 저장
-    if(!(event.oldIndex === event.newIndex && event.from.dataset.menuId === event.to.dataset.menuId)){
+    if(!(event.oldIndex === event.newIndex && event.from.dataset.menuId === event.to.dataset.menuId) && dragItem.value){
       // 변경된 데이터 서버에 저장
       saveDragItem({
-        menuId: dragItem.value.menuId,
+        menuId: dragItem.value.id,
         newUpprMenuId: event.to.dataset.menuId,
         newOrdNo: event.newIndex+1
       });
@@ -159,40 +160,10 @@ const onDragEnd = (event) => {
   emit('setTreeData', props.treeKey, localValue.value);
 
   // 드래그 후 원본 상태 초기화
-  draggingItemIndex.value = null;
+  draggingItemIndex.value = 0;
   dragItem.value = {};
 
   drag.value = false
-};
-
-// 노드 변경 검사 로직
-// 1. 디렉토리는 3depth로 이동할 수 없다.
-// 2. 탭/모달은 이동할 수 없다.
-// 3. 상위메뉴는 하위 메뉴로 이동할 수 없다.
-// 4. 커뮤니티 메뉴는 드래그 불가.
-const checkCondition = (item, fromDepth, toDepth, isCmmu) => {
-  // 1. 디렉토리는 3depth로 이동할 수 없다.
-  // * 현재 데이터상으론 디렉토리 유무 체크가 없으므로 pagePathVal 기입 유무로 판단.
-  if(item.menuDv === 1 && toDepth >= 3) {
-    console.log(1);
-    return true;
-  }
-  // 2. 탭/모달은 이동할 수 없다.
-  if(item.menuDv === 3 || item.menuDv === 4) {
-    console.log(2);
-    return true;
-  }
-  // 3. 상위메뉴는 하위 메뉴로 이동할 수 없다.
-  if(fromDepth < toDepth) {
-    console.log(3);
-    return true;
-  }
-  // 4. 커뮤니티 메뉴는 드래그 불가.
-  if(isCmmu) {
-    console.log(4);
-    return true;
-  }
-  return false;
 };
 
 
@@ -215,19 +186,19 @@ watch(() => localValue.value.children, (newValue, oldValue) => {
         localValue.value.children = oldValue;
       }
     } else {
-      isConditionMet.value = 0; // 발생한 예외처리값 초기화
+      isConditionMet.value = false; // 발생한 예외처리값 초기화
     }
   }
 },{deep: true});
 
 // 하위 데이터 변경 사항 상위로 재귀 전달 메서드
-const setTreeData = (treeKey, value) => {
+const setTreeData = (treeKey: number, value: TreeData[]) => {
   localValue.value[props.seqIdx] = {...value};
   emit('setTreeData', props.treeKey, localValue.value); // 재귀적 처리
 }
 
 /* 트리 데이터 재귀적 원복 처리 */
-const originData = ref([]);
+const originData = ref<TreeData[]>([]);
 // 현재 트리 데이터 저장
 const setOriginData = () => {
   originData.value = [...localValue.value.children];
