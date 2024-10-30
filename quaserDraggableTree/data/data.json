@@ -1,0 +1,98 @@
+[
+  {
+    "id": 0,
+    "upprId": -1,
+    "name": "루트",
+    "depth": "1",
+    "children": [
+      {
+        "id": 1,
+        "upprId": 0,
+        "name": "자식1",
+        "depth": "2",
+        "children": [
+          {
+            "id": 4,
+            "upprId": 1,
+            "name": "자식1_1",
+            "depth": "3",
+            "children": []
+          },
+          {
+            "id": 5,
+            "upprId": 1,
+            "name": "자식1_2",
+            "depth": "3",
+            "children": []
+          },
+          {
+            "id": 6,
+            "upprId": 1,
+            "name": "자식1_3",
+            "depth": "3",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "upprId": 0,
+        "name": "자식2",
+        "depth": "2",
+        "children": [
+          {
+            "id": 7,
+            "upprId": 2,
+            "name": "자식2_1",
+            "depth": "3",
+            "children": []
+          },
+          {
+            "id": 8,
+            "upprId": 2,
+            "name": "자식2_2",
+            "depth": "3",
+            "children": []
+          },
+          {
+            "id": 9,
+            "upprId": 2,
+            "name": "자식2_3",
+            "depth": "3",
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "upprId": 0,
+        "name": "자식3",
+        "depth": "2",
+        "children": [
+          {
+            "id": 10,
+            "upprId": 3,
+            "name": "자식3_1",
+            "depth": "3",
+            "children": []
+          },
+          {
+            "id": 11,
+            "upprId": 3,
+            "name": "자식3_2",
+            "depth": "3",
+            "children": [
+              {
+                "id": 12,
+                "upprId": 11,
+                "name": "자식3_2_1",
+                "depth": "4",
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

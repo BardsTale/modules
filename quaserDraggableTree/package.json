@@ -1,0 +1,25 @@
+{
+  "name": "quaser-draggable-tree",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "quasar dev",
+    "build": "quasar build",
+    "lint": "eslint --ext .js,.ts,.vue src",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "vue": "^3.3.0",
+    "quasar": "^2.10.3",
+    "vue-draggable-next": "^2.1.1"
+  },
+  "devDependencies": {
+    "@quasar/app-vite": "^1.0.0",
+    "eslint": "^8.50.0",
+    "typescript": "^5.2.0"
+  },
+  "engines": {
+    "node": ">= 16.0.0",
+    "npm": ">= 8.0.0"
+  }
+}
