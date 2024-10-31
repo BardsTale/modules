@@ -6,20 +6,48 @@
     "dev": "quasar dev",
     "build": "quasar build",
     "lint": "eslint --ext .js,.ts,.vue src",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
-    "vue": "^3.3.0",
-    "quasar": "^2.10.3",
-    "vue-draggable-next": "^2.1.1"
+    "@quasar/extras": "^1.0.0",
+    "quasar": "^2.6.0",
+    "vue": "^3.0.0",
+    "vue-draggable-next": "^2.2.1"
   },
   "devDependencies": {
+    "@babel/core": "^7.26.0",
+    "@chromatic-com/storybook": "^1.9.0",
     "@quasar/app-vite": "^1.0.0",
+    "@storybook/addon-essentials": "^7.0.0",
+    "@storybook/addon-interactions": "^8.3.6",
+    "@storybook/addon-links": "^7.0.0",
+    "@storybook/addon-onboarding": "^8.3.6",
+    "@storybook/addon-webpack5-compiler-swc": "^1.0.5",
+    "@storybook/blocks": "^8.3.6",
+    "@storybook/builder-vite": "^0.3.0",
+    "@storybook/test": "^8.3.6",
+    "@storybook/vue3": "^7.0.0",
+    "@storybook/vue3-webpack5": "^8.3.6",
+    "@vue/compiler-sfc": "^3.5.12",
+    "babel-loader": "^8.4.1",
+    "css-loader": "^7.1.2",
     "eslint": "^8.50.0",
-    "typescript": "^5.2.0"
+    "eslint-plugin-storybook": "^0.10.1",
+    "sass": "^1.80.5",
+    "sass-loader": "^16.0.2",
+    "storybook": "^8.3.6",
+    "style-loader": "^4.0.0",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.2.0",
+    "vue-loader": "^16.8.3"
   },
   "engines": {
     "node": ">= 16.0.0",
     "npm": ">= 8.0.0"
+  },
+  "eslintConfig": {
+    "extends": []
   }
 }

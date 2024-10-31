@@ -1,26 +1,29 @@
 <template>
-  <div class="q-tree q-tree--standard category type_tbl10">
-    <transition-group type="transition" :name="!drag ? 'flip-list' : undefined">
-      <QDraggableTreeNode v-for="item in localValue as TreeData[]"
-        :key="item.id"
-        :value="item"
-        :group="dragGroup"
-        :is-open="true"
-        :treeKey="item.id"
-        :check-condition="checkCondition"
-        @set-origin-data="setOriginData"
-        @reset-tree-data="resetTreeData"
-        @set-tree-data="setTreeData"
-      >
-        <template v-slot:left="{ item, open }">
-          <slot name="left" :item="item" :open="open" />
-        </template>
-        <template v-if="hasDefaultSlot" v-slot:body="{ item, open }">
-          <slot name="body" :item="item" :open="open" />
-        </template>
-        <span v-if="!hasDefaultSlot">{{ item.name }}</span>
-      </QDraggableTreeNode>
-    </transition-group>
+  <div class="tree_container">
+    <div class="q-tree q-tree--standard category type_tbl10">
+      <transition-group type="transition" :name="!drag ? 'flip-list' : undefined">
+        <QDraggableTreeNode v-for="item in localValue as TreeData[]"
+          :key="item.id"
+          :value="item"
+          :group="dragGroup"
+          :seq-idx="0"
+          :is-open="true"
+          :tree-key="item.id"
+          :check-condition="checkCondition"
+          @set-origin-data="setOriginData"
+          @reset-tree-data="resetTreeData"
+          @set-tree-data="setTreeData"
+        >
+          <template v-slot:left="{ item, open }">
+            <slot name="left" :item="item" :open="open" />
+          </template>
+          <template v-if="hasDefaultSlot" v-slot:body="{ item, open }">
+            <slot name="body" :item="item" :open="open" />
+          </template>
+          <span v-if="!hasDefaultSlot">{{ item.name }}</span>
+        </QDraggableTreeNode>
+      </transition-group>
+    </div>
   </div>
 </template>
 
@@ -85,6 +88,7 @@ const checkCondition = ({fromDepth, toDepth}: DragNodeInfo) => {
   return false;
 };
 </script>
+
 <style lang="scss">
 .flip-list-move {
     transition: transform 0.5s;

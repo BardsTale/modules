@@ -1,18 +1,18 @@
 <!-- 트리 노드 컴포넌트(재귀 컴포넌트, 롤백, 변경 시 재귀적 호출이 필요함.) -->
 <template>
   <div :class="hasChildren ? 'q-tree__node relative-position relative-position q-tree__node--parent' : 'q-tree__node relative-position q-tree__node--child'">
-    <div :data-menu-id="localValue.menuId" class="q-tree__node-header relative-position row no-wrap items-center q-tree__node--link q-hoverable q-focusable" @click="open = !open">
+    <div :data-id="localValue.id" class="q-tree__node-header relative-position row no-wrap items-center q-tree__node--link q-hoverable q-focusable" @click="open = !open">
       <q-icon size="2em" v-if="hasChildren" name="arrow_right"
-        :data-menu-id="localValue.menuId"
+        :data-id="localValue.id"
         :class="open ? 'q-icon notranslate material-icons q-tree__arrow q-tree__arrow--rotate' : 'q-icon notranslate material-icons q-tree__arrow'"
       />
-      <img v-if="hasChildren && !open" class="q-tree__img q-mr-sm" width="24" height="24" src="/icons/icon-folder-closed.svg">
-      <img v-if="hasChildren && open" class="q-tree__img q-mr-sm" width="24" height="24" src="/icons/icon-folder-open.svg">
+      <img v-if="hasChildren && !open" class="q-tree__img q-mr-sm" width="24" height="24" src="../assets/icons/icon-folder-closed.svg">
+      <img v-if="hasChildren && open" class="q-tree__img q-mr-sm" width="24" height="24" src="../assets/icons/icon-folder-open.svg">
       <slot name="left" :item="value" :open="open" />
       <slot v-if="hasDefaultSlot" name="body" :item="value" :open="open" />
-      <div v-if="!hasDefaultSlot" class="q-tree__node-header-content q-pa-xs">
-        {{ value.label }}
-      </div>
+      <span v-if="!hasDefaultSlot" class="q-tree__node-header-content q-pa-xs">
+        {{ value.name }}
+      </span>
     </div>
     <div v-if="open" class="q-tree__children">
       <draggable
@@ -20,8 +20,7 @@
         :class="'q-tree__node-collapsible--ghost'"
         :group="group"
         :data-depth="localValue.depth"
-        :data-menu-id="localValue.menuId"
-        :data-cmmu="localValue.menuPath?.indexOf('커뮤니티') > -1"
+        :data-id="localValue.id"
         v-bind="dragOptions"
         @start="onDragStart"
         @end="onDragEnd"
@@ -44,7 +43,7 @@
             <template v-if="hasDefaultSlot" v-slot:body="{ item, open }">
               <slot name="body" :item="item" :open="open" />
             </template>
-            <span v-if="!hasDefaultSlot">{{ item.label }}</span>
+            <span v-if="!hasDefaultSlot">{{ item.name }}</span>
           </QDraggableTreeNode>
         </transition-group>
       </draggable>
@@ -56,7 +55,7 @@
 import { ref, computed, watch, useSlots, inject, onMounted} from 'vue';
 import { VueDraggableNext as Draggable } from 'vue-draggable-next';
 import QDraggableTreeNode from './QDraggableTreeNode.vue';
-import { DragStartEvent, DragEndEvent, TreeData, FlexibleObject } from '../types/tree-interface.ts';
+import { DragEndEvent, TreeData, FlexibleObject } from '../types/tree-interface.ts';
 
 const props = defineProps({
   value: {
@@ -148,11 +147,11 @@ const onDragEnd = (event: DragEndEvent) => {
     // 변경점이 없지 않은 경우 저장
     if(!(event.oldIndex === event.newIndex && event.from.dataset.menuId === event.to.dataset.menuId) && dragItem.value){
       // 변경된 데이터 서버에 저장
-      saveDragItem({
-        menuId: dragItem.value.id,
-        newUpprMenuId: event.to.dataset.menuId,
-        newOrdNo: event.newIndex+1
-      });
+      // saveDragItem({
+      //   menuId: dragItem.value.id,
+      //   newUpprMenuId: event.to.dataset.id,
+      //   newOrdNo: event.newIndex+1
+      // });
     }
   }
 
@@ -167,34 +166,34 @@ const onDragEnd = (event: DragEndEvent) => {
 };
 
 
-// 상위에서 하위에 꽂아준 경우 하위 원복 처리(3. 상위메뉴는 하위 메뉴로 이동할 수 없다.)
-// 동일 뎁스의 예외 사항 발생 처리 (2번, 4번)
-watch(() => localValue.value.children, (newValue, oldValue) => {
-  // 상위에서 하위에 꽂아준 경우
-  if(newValue.find(ele=> Number(ele.depth) < Number(localValue.value.depth)+1)) {
-    localValue.value.children = oldValue;
-  }
-  // 기존보다 1개가 늘은 경우는 일단 메뉴 변동으로 간주
-  if(newValue.length === oldValue.length+1) {
-    if(!isConditionMet.value){ // 예외처리가 발생하지 않은 깔끔한 상태
-      const newItem = newValue.filter(ele=>!oldValue.includes(ele))[0];
-      if((newItem.menuDv === 3 || newItem.menuDv === 4)) { // 2번, 탭이나 모달
-        localValue.value.children = oldValue;
-      } else if(newItem.menuPath?.indexOf('커뮤니티') > -1) { // 4번, 커뮤니티 메뉴의 이동
-        localValue.value.children = oldValue;
-      } else if(oldValue[0].menuPath?.indexOf('커뮤니티') > -1) { // 4번, 커뮤니티 메뉴로의 삽입
-        localValue.value.children = oldValue;
-      }
-    } else {
-      isConditionMet.value = false; // 발생한 예외처리값 초기화
-    }
-  }
-},{deep: true});
+// // 상위에서 하위에 꽂아준 경우 하위 원복 처리(3. 상위메뉴는 하위 메뉴로 이동할 수 없다.)
+// // 동일 뎁스의 예외 사항 발생 처리 (2번, 4번)
+// watch(() => localValue.value.children, (newValue, oldValue) => {
+//   // 상위에서 하위에 꽂아준 경우
+//   if(newValue.find(ele=> Number(ele.depth) < Number(localValue.value.depth)+1)) {
+//     localValue.value.children = oldValue;
+//   }
+//   // 기존보다 1개가 늘은 경우는 일단 메뉴 변동으로 간주
+//   if(newValue.length === oldValue.length+1) {
+//     if(!isConditionMet.value){ // 예외처리가 발생하지 않은 깔끔한 상태
+//       const newItem = newValue.filter(ele=>!oldValue.includes(ele))[0];
+//       if((newItem.menuDv === 3 || newItem.menuDv === 4)) { // 2번, 탭이나 모달
+//         localValue.value.children = oldValue;
+//       } else if(newItem.menuPath?.indexOf('커뮤니티') > -1) { // 4번, 커뮤니티 메뉴의 이동
+//         localValue.value.children = oldValue;
+//       } else if(oldValue[0].menuPath?.indexOf('커뮤니티') > -1) { // 4번, 커뮤니티 메뉴로의 삽입
+//         localValue.value.children = oldValue;
+//       }
+//     } else {
+//       isConditionMet.value = false; // 발생한 예외처리값 초기화
+//     }
+//   }
+// },{deep: true});
 
 // 하위 데이터 변경 사항 상위로 재귀 전달 메서드
 const setTreeData = (treeKey: number, value: TreeData[]) => {
   localValue.value[props.seqIdx] = {...value};
-  emit('setTreeData', props.treeKey, localValue.value); // 재귀적 처리
+  emit('setTreeData', treeKey, localValue.value); // 재귀적 처리
 }
 
 /* 트리 데이터 재귀적 원복 처리 */
@@ -211,3 +210,61 @@ const resetTreeData = () => {
 }
 
 </script>
+<style lang="scss">
+.relative-position {
+  position: relative;
+}
+
+.q-tree {
+  position: relative;
+
+  &__children {
+    padding-left: 25px;
+  }
+
+  &> .q-tree__node:after, .q-tree > .q-tree__node > .q-tree__node-header:before {
+    display: none;
+  }
+  &> .q-tree__node:after, .q-tree > .q-tree__node > .q-tree__node-header:after {
+    display: none;
+  }
+}
+.tree_container{
+  .q-tree__node-header:before {
+      content: "";
+      position: absolute;
+      top: -3px;
+      bottom: 50%;
+      width: 31px;
+      left: -35px;
+      border-left: 1px solid currentColor;
+      border-bottom: 1px solid currentColor;
+  }
+  .q-tree .q-tree__node .q-tree__node-header:before {
+      width: 15px;
+      left: -15px;
+      border-left-color: #999999;
+      border-left-style: dashed;
+      border-bottom-color: #999999;
+      border-bottom-style: dashed;
+  }
+  .q-tree__node:after {
+      content: "";
+      position: absolute;
+      top: -3px;
+      bottom: 0;
+      width: 2px;
+      right: auto;
+      left: -15px;
+      border-left: 1px solid currentColor;
+  }
+  .q-tree .q-tree__node .q-tree__node:after {
+      border-left-color: #999999;
+      border-left-style: dashed;
+  }
+}
+
+.q-tree__node:last-child:after {
+    display: none;
+}
+</style>
