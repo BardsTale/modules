@@ -31,8 +31,8 @@
             :key="item.id"
             :value="item"
             :group="group"
-            :treeKey="item.id"
-            :seqIdx="idx"
+            :tree-key="item.id"
+            :seq-idx="idx"
             @set-origin-data="setOriginData"
             @reset-tree-data="resetTreeData"
             @set-tree-data="setTreeData"
@@ -145,7 +145,7 @@ const onDragEnd = (event: DragEndEvent) => {
     resetTreeData(); // 현재 롤백 처리
   } else {
     // 변경점이 없지 않은 경우 저장
-    if(!(event.oldIndex === event.newIndex && event.from.dataset.menuId === event.to.dataset.menuId) && dragItem.value){
+    if(!(event.oldIndex === event.newIndex && event.from.dataset.id === event.to.dataset.id) && dragItem.value){
       // 변경된 데이터 서버에 저장
       // saveDragItem({
       //   menuId: dragItem.value.id,
@@ -193,7 +193,7 @@ const onDragEnd = (event: DragEndEvent) => {
 // 하위 데이터 변경 사항 상위로 재귀 전달 메서드
 const setTreeData = (treeKey: number, value: TreeData[]) => {
   localValue.value[props.seqIdx] = {...value};
-  emit('setTreeData', treeKey, localValue.value); // 재귀적 처리
+  emit('setTreeData', props.treeKey, localValue.value); // 재귀적 처리
 }
 
 /* 트리 데이터 재귀적 원복 처리 */
@@ -264,6 +264,9 @@ const resetTreeData = () => {
   }
 }
 
+.q-tree > .q-tree__node:after, .q-tree > .q-tree__node > .q-tree__node-header:before {
+    display: none;
+}
 .q-tree__node:last-child:after {
     display: none;
 }
