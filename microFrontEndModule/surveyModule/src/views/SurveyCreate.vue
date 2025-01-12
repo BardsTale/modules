@@ -16,8 +16,8 @@
           narrow-indicator
           outside-arrows
         >
-          <q-tab name="editSurvey" label="설문편집" :ripple="false" />
-          <q-tab name="resultSurvey" label="설문결과" :ripple="false" />
+          <q-tab name="editSurvey" label="설문만들기" :ripple="false" />
+          <q-tab name="resultSurvey" label="설문DTO" :ripple="false" />
         </q-tabs>
         <q-tab-panels v-model="tab" animated keep-alive>
           <q-tab-panel name="editSurvey">
@@ -109,6 +109,17 @@
             </div>
           </q-tab-panel>
           <q-tab-panel name="resultSurvey" keep-alive>
+            <div>
+              <q-input
+                v-model="paramStringify"
+                input-class="dto__input"
+                outlined
+                placeholder="설문을 임시저장 혹은 등록 시 완성된 DTO를 볼 수 있습니다."
+                type="textarea"
+              >
+                <template v-slot:label>메시지 내용</template>
+              </q-input>
+            </div>
             <!-- 설문 결과 -->
             <!-- <SurveyResult
               :survey-id="storeSurveyId"
@@ -221,6 +232,7 @@ watch(onPageNumber, () => {
 /* 설문 저장 메소드
  * 이벤트 버스에 각 컴포넌트의 파라미터 제작 메소드를 등록 후 루트에서 사용.
  */
+const paramStringify = ref(''); // 생성한 파라미터 데이터 직렬화 데이터
 const saveParam = ref<SurveyInterface>();
 const saveSurvey = async (isTemp: boolean): Promise<void> => {
   // 설문 중지 상태에서 참여 기간이 만료(오늘이 지남)인 경우 수정 불가 예외처리
@@ -298,10 +310,16 @@ const saveSurvey = async (isTemp: boolean): Promise<void> => {
       return aQuerySeq - bQuerySeq;
     });
     // 페이지 & 쿼리 파라미터 삽입
-    sortedKeys.forEach(async (ele) => {
-      // 페이지 파라미터 삽입
-      if(ele.indexOf('addQueryParams') > -1 || ele.indexOf('addPageParams') > -1) saveParam.value = await eventBus.emit(ele,saveParam.value) as SurveyInterface;
-    });
+    for (const ele of sortedKeys) {
+      try {
+        if (ele.indexOf('addQueryParams') > -1 || ele.indexOf('addPageParams') > -1) {
+          saveParam.value = await eventBus.emit(ele, saveParam.value) as SurveyInterface;
+        }
+      } catch (error) {
+        console.error(error);
+        return;  // 파라미터 등록 예외 처리 시 중단
+      }
+    }
 
     // 파일 객체 append
     saveParam.value.attachments?.forEach(ele=>{
@@ -309,6 +327,7 @@ const saveSurvey = async (isTemp: boolean): Promise<void> => {
     });
     delete (saveParam.value).attachments; // attachments는 append 후 불 필요하므로 삭제.
     surveyParamData.append(dtoName, JSON.stringify(saveParam.value));
+    paramStringify.value = JSON.stringify(saveParam.value, null, 2);
   } else {
     surveyParamData = saveParam.value;
   }
@@ -316,15 +335,22 @@ const saveSurvey = async (isTemp: boolean): Promise<void> => {
 
   // axios 통신
   if(confirm(confirmMsg)){
-    surveyAxios(path, method, surveyParamData,()=>{
-      Dialog.create({
-        title: '임시저장 안내',
-        message: '임시저장 되었습니다.<br>[등록]을 클릭해야 설문조사가 완성됩니다.',
-        html: true, // HTML을 지원하도록 설정
-      });
+    Dialog.create({
+      title: '저장 안내',
+      message: 'DTO가 저장되었습니다.',
+      html: true, // HTML을 지원하도록 설정
     });
+
+    // surveyAxios(path, method, surveyParamData,()=>{
+    //   Dialog.create({
+    //     title: '임시저장 안내',
+    //     message: '임시저장 되었습니다.<br>[등록]을 클릭해야 설문조사가 완성됩니다.',
+    //     html: true, // HTML을 지원하도록 설정
+    //   });
+    // });
   }
 }
+
 
 /* 탑 버튼 관리 */
 const showTopButton = computed(()=>{
@@ -625,5 +651,9 @@ onUnmounted(()=>{
   @include flex_row_between;
   gap: 10px;
   margin: 0 0 16px 0;
+}
+
+.dto__input {
+  height: 600px;
 }
 </style>
