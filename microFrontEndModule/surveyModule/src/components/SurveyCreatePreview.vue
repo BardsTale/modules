@@ -10,7 +10,7 @@
           icon="close"
           class="btn_close"
           flat
-          @click="()=>{hideModal()}"
+          @click="hideModal"
           unelevated
           dense
         />
@@ -460,16 +460,16 @@
         <div v-show="nowPage !== surveyPageList.length" class="btn_ctrl_area">
           <q-btn
             v-show="nowPage > 0"
-            @click="()=>{decreasePage()}"
+            @click="decreasePage"
             outline unelevated class="size_md" label="이전" />
           <q-btn
             v-show="nowPage !== surveyPageList.length-1"
-            @click="()=>{increasePage()}"
+            @click="increasePage"
             fill unelevated class="size_md btn_search" label="다음"
           />
           <q-btn
             v-show="nowPage === surveyPageList.length-1"
-            @click="()=>{increasePage()}"
+            @click="increasePage"
             unelevated
             color="black"
             class="size_sm btn_search width_50"
@@ -488,9 +488,10 @@
             />
             <q-btn
               v-if="rspnModfPosbYn"
-              @click="hideModal"
+              @click="nowPage = 0"
               fill
               unelevated
+              color="black"
               class="size_md btn_search"
               label="설문 수정"
             />
