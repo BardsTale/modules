@@ -3,9 +3,9 @@
     :model-value="popupView"
     persistent
   >
-    <q-card class="respons_card inner_form">
+    <q-card class="survey__preview respons_card inner_form">
       <q-card-section class="pop_title_wrap">
-        <h3 class="tit">미리보기</h3>
+        <h3 class="title">미리보기</h3>
         <q-btn
           icon="close"
           class="btn_close"
@@ -13,8 +13,7 @@
           @click="()=>{hideModal()}"
           unelevated
           dense
-          ><b class="a11y">닫기</b></q-btn
-        >
+        />
       </q-card-section>
       <q-card-section class="dialog_content">
         <div v-show="nowPage !== surveyPageList.length" class="survey_content">
@@ -471,8 +470,8 @@
           <q-btn
             v-show="nowPage === surveyPageList.length-1"
             @click="()=>{increasePage()}"
-            fill
             unelevated
+            color="black"
             class="size_sm btn_search width_50"
             label="제출"
           />
@@ -840,7 +839,11 @@ defineExpose({
 </script>
 
 <style lang="scss" scoped>
-
+.survey{
+  &__preview{
+    min-width: 1080px;
+  }
+}
 
 .total_wrap {
   display: flex;
@@ -1813,7 +1816,12 @@ body {
   padding: 4px 12px;
   font-size: 16px;
 }
-
+.btn_close {
+  position: absolute;
+  right: 5px;
+  top: 0;
+  font-size: 24px;
+}
 // 선호도 별점
 .icon-star-on {
   background-image: url('../../public/icons/icon_star_on.svg');
