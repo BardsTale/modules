@@ -776,7 +776,7 @@ const init = (): void => {
   // 데이터 바인딩
   surveyPrdStrDtm.value = surveyParams.value!.surveyPrdStrDate // 설문 시작일
   surveyPrdEndDtm.value = surveyParams.value!.surveyPrdEndDate // 설문 종료일
-  rspnModfPosbYn.value = Boolean(surveyParams.value!.surveyRsltMpblcYn === 'Y') // 설문 수정 유무
+  rspnModfPosbYn.value = Boolean(surveyParams.value!.rspnModfPosbYn === 'Y') // 설문 수정 유무
   surveyPageList.value = surveyParams.value!.surveyPageList // 설문 페이지 정보
 }
 

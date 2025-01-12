@@ -39,7 +39,6 @@ export interface SurveyInterface {
   surveyPrdEndDate: string;
   surveyPrdStrDtm?: string;
   surveyPrdEndDtm?: string;
-  surveyRsltMpblcYn: string;
   surveyCandAnymYn: string;
   rspnModfPosbYn: string;
   surveyPageList: SurveyPage[],
@@ -224,7 +223,6 @@ export interface SurveyListData {
   surveyPtctPercentage: number;
   crtrNm: string;
   finalChgDtm: string;
-  surveyRsltMpblcYn: 'Y'|'N';
   pushCnt: number;
   firstCrtrId: string;
   surveyCreatedByUser: boolean;

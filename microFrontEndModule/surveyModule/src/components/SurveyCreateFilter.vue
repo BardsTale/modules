@@ -80,22 +80,6 @@
     </tr>
     <tr>
       <th class="body2">
-        <span>설문 대상</span>
-      </th>
-      <td class="size_40">
-        <q-btn
-          :class="{disabled: [SurveyStatus.EndedEarly, SurveyStatus.Ended].indexOf(props.surveyStat) > -1}"
-          @click="emit('openAuthModal')"
-          fill
-          unelevated
-          color="grey-2"
-          class="size_sm"
-          label="권한설정"
-          style="margin-right: 20px"
-        />
-        <span class="body2">* 미설정 시 전체 설문 참여 기능</span>
-      </td>
-      <th class="body2">
         <span class="required">익명여부</span>
       </th>
       <td>
@@ -108,28 +92,6 @@
         />
         <q-radio
           v-model="surveyCandAnymYn"
-          val="N"
-          label="N"
-          color="black"
-          class="check_to_radio"
-          style="margin-right: 10px"
-        />
-      </td>
-    </tr>
-    <tr>
-      <th class="body2">
-        <span class="required">설문 결과 공개</span>
-      </th>
-      <td class="size_40">
-        <q-radio
-          v-model="surveyRsltMpblcYn"
-          val="Y"
-          label="Y"
-          color="black"
-          class="check_to_radio"
-        />
-        <q-radio
-          v-model="surveyRsltMpblcYn"
           val="N"
           label="N"
           color="black"
@@ -237,15 +199,7 @@ const surveyCandAnymYn = computed({
     return store.setSurveyCandAnymYn(value);
   }
 });
-// 설문 결과 공개 여부
-const surveyRsltMpblcYn = computed({
-  get(){
-    return store.surveyRsltMpblcYn;
-  },
-  set(value){
-    return store.setSurveyResultMpblcYn(value);
-  }
-});
+
 // 참여 후 수정 공개 여부
 const rspnModfPosbYn = computed({
   get(){
@@ -263,7 +217,6 @@ const createSearchParams = (isPreview: boolean): SurveyInterface => {
     tempYn : 'N', // 디폴트는 N 설문 저장 단계에서 변경
     surveyPrdStrDate : startDate.value,
     surveyPrdEndDate : endDate.value,
-    surveyRsltMpblcYn : store.surveyRsltMpblcYn,
     surveyCandAnymYn : store.surveyCandAnymYn,
     rspnModfPosbYn : store.rspnModfPosbYn,
     surveyPageList: [], // 설문 페이지 리스트(이벤트 버스에서 다음 이벤트에서 값을 담음)
@@ -290,7 +243,6 @@ onUnmounted(() => {
 watch(() => props.filterData, () => {
   startDate.value = props.filterData.surveyPrdStrDtm;
   endDate.value = props.filterData.surveyPrdEndDtm;
-  surveyRsltMpblcYn.value = props.filterData.surveyRsltMpblcYn;
   surveyCandAnymYn.value = props.filterData.surveyCandAnymYn;
   rspnModfPosbYn.value = props.filterData.rspnModfPosbYn;
 },{ deep: true });
@@ -327,5 +279,16 @@ watch(() => props.filterData, () => {
     background-color: #f2f2f2;
     width: 120px;
   }
+}
+.row-4 {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 0 10px;
+}
+
+.inp_date {
+  min-width: 145px;
+  width: 145px;
 }
 </style>

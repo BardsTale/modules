@@ -9,7 +9,6 @@ export const useSurveyStore = defineStore('survey', () => {
   const startDate = ref<string>(''); // 필터영역 설문 시작일자
   const endDate = ref<string>(''); // 필터영역 설문 종료일자
   const surveyCandAnymYn = ref<string>('N'); // 필터영역 익명 여부
-  const surveyRsltMpblcYn = ref<string>('N'); // 필터영역 결과공개 여부
   const rspnModfPosbYn = ref<string>('Y'); // 필터영역 참여 후 수정 여부
   const surveyRgstSurveyId = ref<number>(0); // 설문조사 만들기 surveyId
   const surveyWrteSurveyId = ref<number>(0); // 설문조사 참여 surveyId
@@ -20,7 +19,6 @@ export const useSurveyStore = defineStore('survey', () => {
     startDate.value = '';
     endDate.value = '';
     surveyCandAnymYn.value = 'N';
-    surveyRsltMpblcYn.value = 'N';
     rspnModfPosbYn.value = 'Y';
     surveyRgstSurveyId.value = 0;
     surveyWrteSurveyId.value = 0;
@@ -39,9 +37,6 @@ export const useSurveyStore = defineStore('survey', () => {
   function setSurveyCandAnymYn(value: string) {
     surveyCandAnymYn.value = value;
   }
-  function setSurveyResultMpblcYn(value: string) {
-    surveyRsltMpblcYn.value = value;
-  }
   function setRspnModfPosbYn(value: string) {
     rspnModfPosbYn.value = value;
   }
@@ -58,7 +53,6 @@ export const useSurveyStore = defineStore('survey', () => {
     startDate,
     endDate,
     surveyCandAnymYn,
-    surveyRsltMpblcYn,
     rspnModfPosbYn,
     surveyRgstSurveyId,
     surveyWrteSurveyId,
@@ -67,7 +61,6 @@ export const useSurveyStore = defineStore('survey', () => {
     setStartDate,
     setEndDate,
     setSurveyCandAnymYn,
-    setSurveyResultMpblcYn,
     setRspnModfPosbYn,
     setSurveyCreateSurveyId,
     setSurveyWrteSurveyId,

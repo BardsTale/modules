@@ -98,7 +98,7 @@
     <q-icon
       name="keyboard_double_arrow_up"
       class="icon_svg"
-      style="font-size: 56px;"
+      style="font-size: 45px;"
       @click="moveToTop"
     ></q-icon>
   </div>
@@ -302,6 +302,7 @@ defineExpose({
 
 .control_box {
   background-color: #fff;
+  border: #ccc 1px solid;
   padding: 16px 12px 12px;
   border-radius: 10px;
   margin: 12px 0 0 0;
@@ -346,9 +347,11 @@ defineExpose({
 }
 
 .top_btn {
-  position: absolute;
-  right: 0;
-  top: 60%;
+  position: fixed;
+  right: 3%;
+  top: 90%;
+  border-radius: 10px;
+  border: #2c3e50 2px solid;
 }
 
 .file-add {

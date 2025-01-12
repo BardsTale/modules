@@ -428,7 +428,6 @@ const restartSurvey = (): void => {
   const params = {
     surveyId: storeSurveyId,
     surveyPrdEndDate: store.endDate,
-    surveyRsltMpblcYn: store.surveyRsltMpblcYn,
     surveyCandAnymYn: store.surveyCandAnymYn,
     rspnModfPosbYn: store.rspnModfPosbYn
   }
