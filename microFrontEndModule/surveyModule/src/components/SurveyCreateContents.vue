@@ -40,50 +40,60 @@
     </div>
     <div class="file-add" style="display: inline-block">
       <div class="row-4">
-        <q-btn
+        <q-file
           v-if="[SurveyStatus.Drafting, SurveyStatus.Temp, SurveyStatus.NotStarted].indexOf(props.surveyStat) > -1"
-          unelevated
-          color="grey-3"
-          class="size_sm"
-          label="파일 선택"
-          :class="{disabled: attachGrpList && attachGrpList.length > 0}"
-          @click.prevent="addFile()"
-        />
+          v-model="attachImage"
+          :disable="Boolean(attachImage)"
+          :class="{disabled: attachImage}"
+          :max-file-size="MAX_FILE_SIZE_MB"
+          @rejected="onFileRejected"
+          @update:model-value="addFile"
+          fill
+          color="grey-4"
+          outlined
+          counter
+          class="size_sm shadow add_item_btn"
+          label="이미지 / 파일첨부"
+          accept=".jpg, .jpg, .jpeg, .png, .bmp, .gif, .psd, .pdf"
+        >
+          <template v-slot:append>
+            <q-icon name="attachment" color="orange" />
+          </template>
+        </q-file>
       </div>
     </div>
     <div class="caution">
       <!-- 새로 첨부될 파일 영역 -->
-      <template v-if="attachGrpList && attachGrpList.length > 0">
+      <template v-if="attachImage">
         <template v-if="imageUrl">
           <!-- 이미지 -->
           <div class="" v-if="imageUrl" >
             <img :src="getImageUrlForDisplay(imageUrl)" alt="항목 이미지" style="max-width: 300px;" />
             <q-icon
               v-if="[SurveyStatus.Drafting, SurveyStatus.Temp, SurveyStatus.NotStarted].indexOf(props.surveyStat) > -1"
+              @click.stop="delFile()"
               name="cancel"
               class="icon_svg filter-grey-3"
-              style="right: 0px; cursor: pointer;"
-              @click.stop="delFile()"
+              style="font-size: 20px; left: 5px; cursor: pointer;"
             />
           </div>
         </template>
         <template v-else>
           <!-- pdf -->
-          <div v-for="(file, idx) in attachGrpList" :key="idx">
-            {{ file.name ? file.name : '' }}
-            <q-btn
-              outline
-              class="size_xxs"
-              color="grey-3"
-              @click.prevent="delFile()"
-            >
-              <q-icon
-                v-if="[SurveyStatus.Drafting, SurveyStatus.Temp, SurveyStatus.NotStarted].indexOf(props.surveyStat) > -1"
-                name="cancel"
-                class="icon_svg filter-grey-3"
-              />
-            </q-btn>
-          </div>
+          {{ attachImage.name ? attachImage.name : '' }}
+          <q-btn
+            unelevated
+            class="size_xxs"
+            style="padding: 4px;"
+            @click.prevent="delFile()"
+          >
+            <q-icon
+              v-if="[SurveyStatus.Drafting, SurveyStatus.Temp, SurveyStatus.NotStarted].indexOf(props.surveyStat) > -1"
+              name="cancel"
+              class="icon_svg"
+              style="font-size: 24px;"
+            />
+          </q-btn>
         </template>
       </template>
       <template v-else>
@@ -99,16 +109,11 @@
       </template>
     </div>
   </div>
-  <CmmPctrModal
-    ref="pctrModal"
-    @fileFromStorage="fileReceived"
-    @imageForBase64="fileReceived"
-  />
 </template>
 
 <script lang="ts" setup>
 import { ref, onMounted, onUnmounted, watch } from 'vue';
-import type { SurveyInterface, FileObject, SurveyPage } from '@/composables/survey-interface';
+import type { SurveyInterface, SurveyPage } from '@/composables/survey-interface';
 import { SurveyStatus } from '@/composables/survey-interface';
 import eventBus from '@/composables/survey-event-bus';
 import { Dialog } from 'quasar';
@@ -152,82 +157,41 @@ const removePage = () => {
 
 
 /* 파일 업로드 */
-const ALLOW_EDEXTENSIONS = ['jpg', 'jpeg', 'png', 'bmp', 'gif', 'psd', 'pdf']; // 허용된 파일 확장자
-const MAX_FILE_SIZE_MB = 10; // 최대 사이즈
+const MAX_FILE_SIZE_MB = ref(1024*1024); // 최대 사이즈
 const imageUrl = ref(''); // 이미지 url
-const pctrModal = ref(); // 공용 파일 선택 모달
 
-// 파일 첨부 리스트
-const attachGrpList = ref<Array<File>>([]);
+// 첨부 이미지
+const attachImage = ref<File|null>(null);
 
 // 파일 첨부 메소드
-const addFile = () => {
-  if (!(attachGrpList.value.length > 0)) {
-    const param = {
-      type: 'file',
-      permission: {
-        storage: true,
-        gallery: true,
-        camera: true,
-      },
-      option: {
-        multiple: true,
-      },
-    };
-
-    pctrModal.value.openModal(param);
-    return;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const addFile = (file: any) => {
+  if (file) {
+    const selectedFile = file;
+    if (selectedFile && selectedFile.type.startsWith('image/')) {
+      imageUrl.value = URL.createObjectURL(selectedFile);
+    }
   }
 };
 
 // 공용 파일 업로드 에밋 메소드
-const fileReceived = (result: FileObject): void => {
-  if (!result) return;
-  const reader = new FileReader();
-  const file = result.fileList[0];
-  const fileSizeMB = file.size / (1024 * 1024);
-  const fileExtension = file.name.split('.').pop()?.toLowerCase();
-
-  // 파일 확장자 확인
-  if (!fileExtension || !ALLOW_EDEXTENSIONS.includes(fileExtension)) {
-    Dialog.create({
-      message: 'jpg, jpeg, png, bmp, gif, psd, pdf 확장자만 등록 가능합니다.',
-    });
-    return;
-  }
-
-  // 이미지 파일 또는 PDF 파일인지 본연적인 확인
-  if (!file.type.startsWith('image/') && file.type !== 'application/pdf') {
-    Dialog.create({
-      message: 'jpg, jpeg, png, bmp, gif, psd, pdf 확장자만 등록 가능합니다.',
-    });
-    return;
-  }
-
-  // 파일 크기 확인
-  if (fileSizeMB > MAX_FILE_SIZE_MB) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const onFileRejected = (rejectedEntries: any[]) => {
+  if(rejectedEntries[0].failedPropValidation === 'max-file-size'){
     Dialog.create({
       message: '10MB 이하의 1개 이미지만 첨부하실 수 있습니다.',
     });
-    return;
   }
-
-  // 이미지 처리
-  if(file.type !== 'application/pdf'){
-    reader.onload = (e: ProgressEvent<FileReader>) => {
-      if (e.target) {
-          imageUrl.value = e.target.result as string;
-      }
-    };
-    reader.readAsDataURL(file);
+  if(rejectedEntries[0].failedPropValidation === 'accept'){
+    Dialog.create({
+      message: 'jpg, jpeg, png, bmp, gif, psd, pdf 확장자만 등록 가능합니다.',
+    });
   }
-
-  attachGrpList.value.push(result.fileList[0]);
-};
+}
 
 // 파일 삭제 메소드
 const delFile = (): void => {
-  attachGrpList.value.pop();
+  attachImage.value = null;
   imageUrl.value = '';
 };
 
@@ -253,27 +217,27 @@ const addParameters = (params: SurveyInterface): SurveyInterface => {
     pageTitle: pageNm.value,
     pageExpn: pageExpn.value,
     pageFileAwsObjNm: imageUrl.value,
-    pageImgFileUploaded: attachGrpList.value.length > 0? true : false,
+    pageImgFileUploaded: attachImage.value? true : false,
     surveyQuestList:[]
   } as SurveyPage
 
   // 파일 처리
   if(props.sureyParams){ // 설문 수정인 경우
-    if(attachGrpList.value[0] && !props.sureyParams?.pageFileRealNm) { // 이미지 신규 등록
+    if(attachImage.value && !props.sureyParams?.pageFileRealNm) { // 이미지 신규 등록
       pageParam.pageFileDeleted = false;
       pageParam.pageFileUploaded = true;
 
       // 파일 등록 처리
-      const reNameFile = new File([attachGrpList.value[0]], `${props.sureyParams.pageId}_${attachGrpList.value[0].name}`)
+      const reNameFile = new File([attachImage.value], `${props.sureyParams.pageId}_${attachImage.value.name}`)
       params.attachments?.push(reNameFile);
-    } else if(attachGrpList.value[0] && props.sureyParams?.pageFileRealNm && (props.sureyParams?.pageFileRealNm !== attachGrpList.value[0]?.name)) { // 이미지 변경
+    } else if(attachImage.value && props.sureyParams?.pageFileRealNm && (props.sureyParams?.pageFileRealNm !== attachImage.value.name)) { // 이미지 변경
       pageParam.pageFileDeleted = true;
       pageParam.pageFileUploaded = true;
 
       // 파일 등록 처리
-      const reNameFile = new File([attachGrpList.value[0]], `${props.sureyParams.pageId}_${attachGrpList.value[0]?.name}`)
+      const reNameFile = new File([attachImage.value], `${props.sureyParams.pageId}_${attachImage.value.name}`)
       params.attachments?.push(reNameFile);
-    } else if(!attachGrpList.value[0] && props.sureyParams?.pageFileRealNm) { // 이미지 삭제
+    } else if(!attachImage.value && props.sureyParams?.pageFileRealNm) { // 이미지 삭제
       pageParam.pageFileDeleted = true;
       pageParam.pageFileUploaded = false;
     } else { // 아무 것도 아님.
@@ -282,8 +246,8 @@ const addParameters = (params: SurveyInterface): SurveyInterface => {
     }
   } else { // 신규 설문
     // 파일 등록 처리
-    if(attachGrpList.value.length > 0){
-      params.attachments?.push(attachGrpList.value[0]);
+    if(attachImage.value){
+      params.attachments?.push(attachImage.value);
     }
   }
   params['surveyPageList'].push(pageParam);
@@ -335,7 +299,7 @@ watch(() => props.sureyParams, () => {
 
     if(props.sureyParams.pageFileAwsObjNm){
       imageUrl.value = props.sureyParams.pageFileAwsObjNm;
-      attachGrpList.value.push(new File([], props.sureyParams.pageFileRealNm, { type: 'image/png' }))
+      attachImage.value = new File([], props.sureyParams.pageFileRealNm, { type: 'image/png' });
     }
   }
 },{ deep: true, immediate: true });
@@ -481,9 +445,10 @@ const getImageUrlForDisplay = (fileKey: string): string => {
 }
 
 .set_contents {
+  margin-top: 25px;
   padding: 25px;
   border-radius: 10px;
-  background-color: #fff;
+  border: #ccc 1px solid;
   h4 {
     font-size: 16px;
     font-weight: bold;

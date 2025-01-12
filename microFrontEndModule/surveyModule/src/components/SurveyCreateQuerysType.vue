@@ -4,7 +4,7 @@
   <template v-if="props.isSelect" >
     <div class="params_wrap">
       <div class="handle">
-        <q-icon name="icon-menu" class="icon_svg"></q-icon>
+        <q-icon name="menu" class="icon_svg" style="font-size: 24px;" />
       </div>
       <div class="params_top row">
         <q-select
@@ -30,16 +30,16 @@
         <div>
           <q-icon
             v-if="[SurveyStatus.Drafting, SurveyStatus.Temp, SurveyStatus.NotStarted].indexOf(props.surveyStat) > -1"
-            name="icon-copy-2"
+            name="content_copy"
             class="icon_svg"
-            style="width: 40px; height: 40px; cursor: pointer;"
+            style="font-size: 24px; margin-top: 10px; cursor: pointer;"
             @click="copyQuery"
           ></q-icon>
           <q-icon
             v-if="[SurveyStatus.Drafting, SurveyStatus.Temp, SurveyStatus.NotStarted].indexOf(props.surveyStat) > -1"
-            name="icon-trash-can"
+            name="delete"
             class="icon_svg"
-            style="width: 40px; height: 40px; margin-left: 10px; cursor: pointer;"
+            style="font-size: 24px; margin: 7px 0 0 10px; cursor: pointer;"
             @click="removeQuery"
           ></q-icon>
         </div>
@@ -107,21 +107,34 @@
                       @keyup.space.stop
                     />
                     <q-item-section avatar style="min-width: 16px; padding: 0 10px 0 0">
+                      <!-- q-file의 제어는 q-icon이 처리 -->
                       <q-icon
                         v-if="[SurveyStatus.Drafting, SurveyStatus.Temp, SurveyStatus.NotStarted].indexOf(props.surveyStat) > -1"
-                        :class="{disabled : attachImageList[num-1]}"
-                        @click.stop="addFile($event,num-1)"
-                        name="icon-photo"
+                        :class="{disabled: attachImageList[num-1]}"
+                        @click.stop="onFilePicker(num-1)"
+                        name="image"
                         class="icon_svg"
-                        size="16px"
+                        style="font-size: 24px;"
+                      />
+                      <q-file
+                        :ref="el => fileRefs[num - 1] = el"
+                        v-if="[SurveyStatus.Drafting, SurveyStatus.Temp, SurveyStatus.NotStarted].indexOf(props.surveyStat) > -1"
+                        v-model="attachImageList[num-1]"
+                        :max-file-size="MAX_FILE_SIZE_MB"
+                        @rejected="onFileRejected"
+                        @update:model-value="(value)=> addFile(value, num-1)"
+                        @click.stop
+                        accept=".jpg, image/*"
+                        style="display: none;"
                       />
                     </q-item-section>
                     <q-item-section>
                       <q-icon
                         v-if="[SurveyStatus.Drafting, SurveyStatus.Temp, SurveyStatus.NotStarted].indexOf(props.surveyStat) > -1"
                         @click.stop="decreaseItemCount($event,{},num-1, false)"
-                        name="icon-close"
+                        name="close"
                         class="icon_svg"
+                        style="font-size: 24px;"
                       />
                     </q-item-section>
                   </div>
@@ -133,10 +146,9 @@
                 <q-icon
                   v-if="[SurveyStatus.Drafting, SurveyStatus.Temp, SurveyStatus.NotStarted].indexOf(props.surveyStat) > -1"
                   @click.stop="delFile(num-1)"
-                  name="icon-close"
-                  size="16px"
-                  class="icon_svg"
-                  style="left: 10px; cursor: pointer;"
+                  name="cancel"
+                  class="icon_svg filter-grey-3"
+                  style="font-size: 20px; left: 5px; cursor: pointer;"
                 />
               </div>
             </template>
@@ -147,9 +159,9 @@
                     <q-icon
                       v-if="[SurveyStatus.Drafting, SurveyStatus.Temp, SurveyStatus.NotStarted].indexOf(props.surveyStat) > -1"
                       @click.stop="decreaseItemCount($event,{}, 0, true)"
-                      name="icon-close"
+                      name="close"
                       class="icon_svg"
-                      size="16px"
+                      style="font-size: 24px;"
                     />
                   </div>
                 </template>
@@ -198,21 +210,34 @@
                       v-model="checkInputArray[num-1].itemNm"
                     />
                     <q-item-section avatar style="min-width: 16px; padding: 0 10px 0 0">
+                      <!-- q-file의 제어는 q-icon이 처리 -->
                       <q-icon
                         v-if="[SurveyStatus.Drafting, SurveyStatus.Temp, SurveyStatus.NotStarted].indexOf(props.surveyStat) > -1"
-                        :class="{disabled : attachImageList[num-1]}"
-                        @click.stop="addFile($event,num-1)"
-                        size="16px"
-                        name="icon-photo"
+                        :class="{disabled: attachImageList[num-1]}"
+                        @click.stop="onFilePicker(num-1)"
+                        name="image"
                         class="icon_svg"
+                        style="font-size: 24px;"
+                      />
+                      <q-file
+                        :ref="el => fileRefs[num - 1] = el"
+                        v-if="[SurveyStatus.Drafting, SurveyStatus.Temp, SurveyStatus.NotStarted].indexOf(props.surveyStat) > -1"
+                        v-model="attachImageList[num-1]"
+                        :max-file-size="MAX_FILE_SIZE_MB"
+                        @rejected="onFileRejected"
+                        @update:model-value="(value)=> addFile(value, num-1)"
+                        @click.stop
+                        accept=".jpg, image/*"
+                        style="display: none;"
                       />
                     </q-item-section>
                     <q-item-section>
                       <q-icon
                         v-if="[SurveyStatus.Drafting, SurveyStatus.Temp, SurveyStatus.NotStarted].indexOf(props.surveyStat) > -1"
-                        name="icon-close"
-                        class="icon_svg"
                         @click.stop="decreaseItemCount($event,{},num-1, false)"
+                        name="close"
+                        class="icon_svg"
+                        style="font-size: 24px;"
                       />
                     </q-item-section>
                   </div>
@@ -224,10 +249,9 @@
                 <q-icon
                   v-if="[SurveyStatus.Drafting, SurveyStatus.Temp, SurveyStatus.NotStarted].indexOf(props.surveyStat) > -1"
                   @click.stop="delFile(num-1)"
-                  name="icon-close"
-                  class="icon_svg"
-                  size="16px"
-                  style="left: 10px; cursor: pointer;"
+                  name="cancel"
+                  class="icon_svg filter-grey-3"
+                  style="font-size: 20px; right: -5px; cursor: pointer;"
                 />
               </div>
             </template>
@@ -236,10 +260,10 @@
                 <template v-slot:default>
                   <div style="margin-left: 15px; display: inline-block; line-height: 25px">
                     <q-icon
-                      name="icon-close"
-                      class="icon_svg"
-                      size="16px"
                       @click.stop="decreaseItemCount($event,{}, 0, true)"
+                      name="close"
+                      class="icon_svg"
+                      style="font-size: 24px;"
                     />
                   </div>
                 </template>
@@ -397,7 +421,7 @@
   <template v-else>
     <div class="params_wrap">
       <div class="handle">
-        <q-icon name="icon-menu" class="icon_svg"></q-icon>
+        <q-icon name="menu" class="icon_svg" style="font-size: 24px;" />
       </div>
       <div @click="toggleSelect" class="params_top" style="cursor: pointer">
         <div class="answer_item" style="pointer-events: none;">
@@ -757,7 +781,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, onUnmounted, watch } from 'vue';
+import { ref, onMounted, onUnmounted, watch, toValue } from 'vue';
 import { date } from 'quasar';
 import type { FlexibleObject, SurveyInterface, SurveyQuest, SurveyQuestItem, FileObject } from '@/composables/survey-interface';
 import { SurveyOption, QuestType, PreferType, DatetimeType, SurveyStatus } from '@/composables/survey-interface';
@@ -917,76 +941,47 @@ const decreaseItemCount = (event: Event, go:object, num: number, isEtc: boolean)
 }
 
 // 이미지 첨부
-const ALLOW_EDEXTENSIONS = ['jpg', 'jpeg', 'png', 'bmp', 'gif', 'psd']; // 허용된 파일 확장자
-const MAX_FILE_SIZE_MB = 10; // 최대 사이즈
+const MAX_FILE_SIZE_MB = ref(1024*1024); // 최대 사이즈
 const pctrModal = ref(); // 공용 파일 선택 모달
-const fileCursorIndex = ref(0); // 현재 파일 인덱스
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const fileRefs = ref<any[]>([]); // q-file 컴포넌트 refs.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const imageUrlList = ref<any[]>([]); // 이미지 url List
 
 // 파일 첨부 리스트
 const attachImageList = ref<Array<File|undefined>>([]);
 
-// 파일 첨부 메소드
-const addFile = (event:PointerEvent , num: number) => {
-  if (!attachImageList.value[num]) {
-    const param = {
-      type: 'file',
-      permission: {
-        storage: true,
-        gallery: true,
-        camera: true,
-      },
-      option: {
-        multiple: true,
-      },
-    };
-    fileCursorIndex.value = num; // 현재 파일 인덱스 저장
-    pctrModal.value.openModal(param);
-    return;
-  }
-};
+// 파일 첨부 실행 이벤트
+const onFilePicker = (index: number) => {
+  if(!attachImageList.value[index]) fileRefs.value[index].pickFiles();
+}
 
-// 공용 파일 업로드 에밋 메소드
-const fileReceived = (result: FileObject): void => {
-  if (!result) return;
-  const reader = new FileReader();
-  const file = result.fileList[0];
-  const fileSizeMB = file.size / (1024 * 1024);
-  const fileExtension = file.name.split('.').pop()?.toLowerCase();
-
-  // 파일 확장자 확인
-  if (!fileExtension || !ALLOW_EDEXTENSIONS.includes(fileExtension)) {
-    Dialog.create({
-      message: 'jpg, jpeg, png, bmp, gif, psd, pdf 확장자만 등록 가능합니다.',
-    });
-    return;
-  }
-
-  // 파일 타입으로 이미지 파일 재차 확인
-  if (!file.type.startsWith('image/')) {
-    Dialog.create({
-      message: 'jpg, jpeg, png, bmp, gif, psd, pdf 확장자만 등록 가능합니다.',
-    });
-    return;
-  }
-
-  // 파일 크기 확인
-  if (fileSizeMB > MAX_FILE_SIZE_MB) {
+// 파일 첨부 에밋 메소드
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const onFileRejected = (rejectedEntries: any[]) => {
+  if(rejectedEntries[0].failedPropValidation === 'max-file-size'){
     Dialog.create({
       message: '10MB 이하의 1개 이미지만 첨부하실 수 있습니다.',
     });
-    return;
   }
+  if(rejectedEntries[0].failedPropValidation === 'accept'){
+    Dialog.create({
+      message: 'jpg, jpeg, png, bmp, gif, psd, pdf 확장자만 등록 가능합니다.',
+    });
+  }
+}
 
-  reader.onload = (e: ProgressEvent<FileReader>) => {
-    if (e.target) {
-        imageUrlList.value[fileCursorIndex.value] = e.target.result as string;
+// 파일 첨부 메소드
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const addFile = (file: any, index: number) => {
+  if (file) {
+    const selectedFile = file;
+    if (selectedFile && selectedFile.type.startsWith('image/')) {
+      imageUrlList.value[index] = URL.createObjectURL(selectedFile);
     }
-  };
-  reader.readAsDataURL(file);
-  attachImageList.value[fileCursorIndex.value] = file;
+  }
 };
+
 
 // 파일 삭제 메소드
 const delFile = (index: number, itemDelete?: boolean): void => {

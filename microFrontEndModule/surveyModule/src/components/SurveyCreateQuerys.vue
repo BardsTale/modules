@@ -26,7 +26,7 @@
     <q-btn
       :class="{disabled:[SurveyStatus.Drafting, SurveyStatus.Temp, SurveyStatus.NotStarted].indexOf(props.surveyStat) === -1}"
       outline
-      icon-right=""
+      icon-right="add"
       unelevated
       class="size_sm btn_row_add"
       label="질문추가"
@@ -194,6 +194,7 @@ defineExpose({
   margin: 20px 0 0 0;
   padding: 10px 25px 25px;
   border-radius: 10px;
+  border: #ccc 1px solid;
   background-color: #fff;
 }
 

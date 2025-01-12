@@ -298,10 +298,12 @@
                         <div class="wrap_counsel_form">
                           <q-file
                             v-model="attachFileList[`${idx}_${secondIdx}`]"
+                            :disable="Boolean(attachFileList[`${idx}_${secondIdx}`])"
                             :class="{disabled: attachFileList[`${idx}_${secondIdx}`]}"
                             :max-file-size="MAX_FILE_SIZE_MB"
                             @rejected="onFileRejected"
                             @update:model-value="addFile"
+                            counter
                             fill
                             color="grey-4"
                             outlined
@@ -323,7 +325,7 @@
                                 @click.prevent="delFile(`${idx}_${secondIdx}`)"
                               >
                                 <q-icon
-                                  name="close"
+                                  name="cancel"
                                   class="icon_svg"
                                   style="font-size: 24px;"
                                 />
@@ -627,7 +629,7 @@ const addFile = (value: any) => {
   console.log(value)
 };
 
-// 공용 파일 업로드 에밋 메소드
+// 공용 파일 첨부부 에밋 메소드
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const onFileRejected = (rejectedEntries: any[]) => {
   if(rejectedEntries[0].failedPropValidation === 'max-file-size'){

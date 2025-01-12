@@ -300,7 +300,7 @@ watch(() => props.filterData, () => {
 .survey-table {
   width: 100%;
   border-collapse: collapse;
-  border-top: 1px solid #000;
+  border-top: 1px solid #ccc;
   tr {
     height: 58px;
   }
