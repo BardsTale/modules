@@ -120,20 +120,6 @@
                 <template v-slot:label>메시지 내용</template>
               </q-input>
             </div>
-            <!-- 설문 결과 -->
-            <!-- <SurveyResult
-              :survey-id="storeSurveyId"
-              :survey-stat="surveyStat"
-            >
-              <template v-slot:user-modal="scopeProps">
-                <q-btn
-                  outline
-                  unelevated
-                  class="size_sm desktop_view"
-                  label="보기"
-                />
-              </template>
-            </SurveyResult> -->
           </q-tab-panel>
         </q-tab-panels>
       </div>
@@ -156,7 +142,6 @@ import SurveyCreateContents from '@/components/SurveyCreateContents.vue';
 import SurveyCreateQuerys from '@/components/SurveyCreateQuerys.vue';
 import SurveyCreateAddOn from '@/components/SurveyCreateAddOn.vue';
 import SurveyCreatePreview from '@/components/SurveyCreatePreview.vue';
-// import SurveyResult from '@/components/SurveyResult.vue'; // 설문 결과탭
 import { useRoute } from 'vue-router';
 import moment from'moment';
 const store = useSurveyStore();
