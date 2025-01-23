@@ -326,6 +326,7 @@ const saveSurvey = async (isTemp: boolean): Promise<void> => {
       html: true, // HTML을 지원하도록 설정
     });
 
+    // 모듈 예제에선 DTO Text return으로 변경
     // surveyAxios(path, method, surveyParamData,()=>{
     //   Dialog.create({
     //     title: '임시저장 안내',
