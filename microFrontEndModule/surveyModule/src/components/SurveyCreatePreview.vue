@@ -465,7 +465,7 @@
           <q-btn
             v-show="nowPage !== surveyPageList.length-1"
             @click="increasePage"
-            fill unelevated class="size_md btn_search" label="다음"
+            outline unelevated class="size_md btn_search" label="다음"
           />
           <q-btn
             v-show="nowPage === surveyPageList.length-1"
