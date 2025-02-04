@@ -27,11 +27,12 @@
           class="body2"
           label="필수여부"
         />
-        <div>
+        <div style="flex: 1;">
           <q-icon
             v-if="[SurveyStatus.Drafting, SurveyStatus.Temp, SurveyStatus.NotStarted].indexOf(props.surveyStat) > -1"
             name="content_copy"
             class="icon_svg"
+            title="복사"
             style="font-size: 24px; margin-top: 10px; cursor: pointer;"
             @click="copyQuery"
           ></q-icon>
@@ -39,8 +40,17 @@
             v-if="[SurveyStatus.Drafting, SurveyStatus.Temp, SurveyStatus.NotStarted].indexOf(props.surveyStat) > -1"
             name="delete"
             class="icon_svg"
+            title="삭제"
             style="font-size: 24px; margin: 7px 0 0 10px; cursor: pointer;"
             @click="removeQuery"
+          ></q-icon>
+          <q-icon
+            v-if="[SurveyStatus.Drafting, SurveyStatus.Temp, SurveyStatus.NotStarted].indexOf(props.surveyStat) > -1"
+            name="loop"
+            class="icon_svg"
+            title="보기 전환"
+            style="font-size: 30px; float: right; margin: 7px 0 0 10px; cursor: pointer;"
+            @click="viewOff"
           ></q-icon>
         </div>
       </div>
@@ -772,18 +782,13 @@
       </div>
     </div>
   </template>
-  <CmmPctrModal
-    ref="pctrModal"
-    @fileFromStorage="fileReceived"
-    @imageForBase64="fileReceived"
-  />
 </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, onUnmounted, watch, toValue } from 'vue';
+import { ref, onMounted, onUnmounted, watch } from 'vue';
 import { date } from 'quasar';
-import type { FlexibleObject, SurveyInterface, SurveyQuest, SurveyQuestItem, FileObject } from '@/composables/survey-interface';
+import type { FlexibleObject, SurveyInterface, SurveyQuest, SurveyQuestItem } from '@/composables/survey-interface';
 import { SurveyOption, QuestType, PreferType, DatetimeType, SurveyStatus } from '@/composables/survey-interface';
 import eventBus from '@/composables/survey-event-bus';
 import { Dialog } from 'quasar';
@@ -829,12 +834,15 @@ const props = defineProps({
 
 
 
-/* 설문 선택(활성화) 여부 */
-// 기획서엔 선택 해제에 대한 설명이 누락되어있음. -> 다른 질문 클릭 시 토글하는 것으로.
+/* 설문 뷰 토글 */
 const toggleSelect = ():void => {
   emit('selectQuery', props.querySeq);
 }
 
+/* 설문 뷰 비활성화 */
+const viewOff = ():void => {
+  emit('selectQuery', 9999);
+}
 
 
 /* 설문 복사 & 삭제 */
