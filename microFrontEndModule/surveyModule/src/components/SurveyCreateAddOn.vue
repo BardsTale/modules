@@ -352,6 +352,7 @@ defineExpose({
   top: 90%;
   border-radius: 10px;
   border: #2c3e50 2px solid;
+  opacity: .8;
 }
 
 .file-add {

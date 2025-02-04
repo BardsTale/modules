@@ -1053,7 +1053,7 @@ const roundTime = (newTime: any): void => {
 const addParameters = (params: SurveyInterface): SurveyInterface => {
   // 필수값 미입력 예외처리
   let validations = [
-    { value: questionInput.value, text: '질문이 입력되지 않았습니다.' },
+    { value: questionInput.value, text: `${props.surveyPageSeq+1}페이지 ${props.querySeq+1}번 질문 제목이 입력되지 않았습니다.` },
   ];
 
   // 타입별 예외처리

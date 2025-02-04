@@ -204,7 +204,7 @@ const addParameters = (params: SurveyInterface): SurveyInterface => {
   // 필수값 미입력 예외처리
   if(!pageNm.value && !params.isPreview){
     Dialog.create({
-      message: '페이지 제목이 입력되지 않았습니다.',
+      message: `${props.surveyPageSeq+1}페이지 제목이 입력되지 않았습니다.`,
     });
     throw new Error('페이지 제목이 입력되지 않았습니다.');
   }
