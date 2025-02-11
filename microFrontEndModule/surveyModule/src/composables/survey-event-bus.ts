@@ -33,7 +33,7 @@ export const off = (event: string) => {
 };
 
 // 이벤트를 발생시키는 함수
-export const emit = <T>(event: string, arg: T): Promise<any> => {
+export const emit = <T>(event: string, arg?: T): Promise<any> => {
   return new Promise((resolve, reject) => {
     try{
       return resolve(eventBusList.value[event].handler(arg));
