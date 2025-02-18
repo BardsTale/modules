@@ -1283,44 +1283,12 @@ const getImageUrlForDisplay = (fileKey: string): string => {
 };
 </script>
 <style lang="scss" scoped>
-.survey-table {
-  width: 100%;
-  border-collapse: collapse;
-  border-top: 1px solid #000;
-  tr {
-    height: 58px;
-  }
-  th {
-    padding: 0 0 0 24px;
-    width: 180px !important;
-    border-bottom: 1px solid #ccc;
-    .required::after {
-      display: inline-block;
-      content: '*';
-      padding-left: 5px;
-      color: #ed1c24;
-    }
-  }
-  td {
-    padding: 0 10px;
-    border-bottom: 1px solid #ccc;
-    &.size_40 {
-      width: 40%;
-    }
-  }
-  th {
-    text-align: left;
-    background-color: #f2f2f2;
-    width: 120px;
-  }
-}
-
-
 .set_params {
   margin: 20px 0 0 0;
   padding: 10px 25px 25px;
-  border-radius: 10px;
   background-color: #fff;
+  border-radius: 10px;
+  border: #ccc 1px solid;
 }
 
 .wrap_textarea {

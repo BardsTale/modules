@@ -28,9 +28,8 @@
       outline
       icon-right="add"
       unelevated
-      class="size_sm btn_row_add"
+      class="size_sm btn_row_add query__btn--add"
       label="질문추가"
-      style="border-radius: 24px"
       @click="addQuery({},undefined)"
     />
   </div>
@@ -172,5 +171,10 @@ defineExpose({
 .add_btn_ara {
   text-align: center;
   margin: 20px 0 0 0;
+}
+
+.query__btn--add {
+  border-radius: 24px;
+  background-color: white !important;
 }
 </style>

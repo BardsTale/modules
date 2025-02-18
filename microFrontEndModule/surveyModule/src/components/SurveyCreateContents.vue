@@ -337,6 +337,7 @@ const getImageUrlForDisplay = (fileKey: string): string => {
 }
 
 .set_contents {
+  background-color: white;
   margin-top: 25px;
   padding: 25px;
   border-radius: 10px;

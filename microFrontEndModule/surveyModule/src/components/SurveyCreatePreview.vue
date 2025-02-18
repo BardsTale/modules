@@ -846,38 +846,6 @@ defineExpose({
   }
 }
 
-.survey-table {
-  width: 100%;
-  border-collapse: collapse;
-  border-top: 1px solid #000;
-  tr {
-    height: 58px;
-  }
-  th {
-    padding: 0 0 0 24px;
-    width: 180px !important;
-    border-bottom: 1px solid #ccc;
-    .required::after {
-      display: inline-block;
-      content: '*';
-      padding-left: 5px;
-      color: #ed1c24;
-    }
-  }
-  td {
-    padding: 0 10px;
-    border-bottom: 1px solid #ccc;
-    &.size_40 {
-      width: 40%;
-    }
-  }
-  th {
-    text-align: left;
-    background-color: #f2f2f2;
-    width: 120px;
-  }
-}
-
 .wrap_textarea {
   margin: 8px 0 0 0;
 }

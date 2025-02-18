@@ -3,8 +3,7 @@
   <q-btn
     @click="()=>{ emit('showPreviewModal') }"
     outline
-    style="width: 100%; border-radius: 8px"
-    class="size_sm"
+    class="size_sm addon__btn--preview"
   >
     <q-icon name="zoom_in" class="icon_svg"></q-icon>
     <span class="title3 btn_title3">미리보기</span>
@@ -288,5 +287,11 @@ defineExpose({
   border-radius: 10px;
   border: #2c3e50 2px solid;
   opacity: .8;
+}
+
+.addon__btn--preview{
+  width: 100%;
+  border-radius: 8px;
+  background-color: white !important;
 }
 </style>

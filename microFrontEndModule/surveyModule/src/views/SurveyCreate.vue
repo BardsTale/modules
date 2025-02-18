@@ -20,7 +20,7 @@
           <q-tab name="resultSurvey" label="설문DTO" :ripple="false" />
         </q-tabs>
         <q-tab-panels v-model="tab" animated keep-alive>
-          <q-tab-panel name="editSurvey">
+          <q-tab-panel name="editSurvey" class="survey__tab survey__tab--edit">
             <div class="total_wrap">
               <div class="lh_area">
                 <div class="wrap_table_box">
@@ -63,9 +63,8 @@
                       v-if="[SurveyStatus.Temp,SurveyStatus.Drafting].includes(surveyStat)"
                       outline
                       unelevated
-                      class="size_sm"
+                      class="size_sm survey__btn--save-temp"
                       label="임시저장"
-                      style="width: 160px"
                       @click="()=>{ saveSurvey(true) }"
                     />
                     <q-btn
@@ -524,5 +523,14 @@ onUnmounted(()=>{
 
 .dto__input {
   height: 600px;
+}
+
+.survey__btn--save-temp {
+  width: 160px;
+  background-color: white !important;
+}
+
+.survey__tab--edit{
+  /* background-color: rgb(248, 248, 248); */
 }
 </style>

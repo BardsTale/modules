@@ -10,7 +10,7 @@
             <q-input
               :disabled="[SurveyStatus.Started, SurveyStatus.Extended, SurveyStatus.Stopped, SurveyStatus.EndedEarly, SurveyStatus.Ended].indexOf(props.surveyStat) > -1"
               :class="{disabled: [SurveyStatus.Started, SurveyStatus.Extended, SurveyStatus.Stopped, SurveyStatus.EndedEarly, SurveyStatus.Ended].indexOf(props.surveyStat) > -1}"
-              outlined
+              borderless
               v-model="startDate"
               class="inp_date normal"
               style="margin-right: 4px"
@@ -46,7 +46,7 @@
             <q-input
               :readonly="[SurveyStatus.EndedEarly, SurveyStatus.Ended].indexOf(props.surveyStat) > -1"
               :class="{disabled: [SurveyStatus.EndedEarly, SurveyStatus.Ended].indexOf(props.surveyStat) > -1}"
-              outlined
+              borderless
               v-model="endDate"
               class="inp_date normal"
               style="margin-right: 4px"
@@ -248,6 +248,7 @@ watch(() => props.filterData, () => {
 
 <style lang="scss" scoped>
 .survey-table {
+  background-color: white;
   width: 100%;
   border-collapse: collapse;
   border-top: 1px solid #ccc;
@@ -286,7 +287,7 @@ watch(() => props.filterData, () => {
 }
 
 .inp_date {
-  min-width: 145px;
-  width: 145px;
+  min-width: 110px;
+  width: 110px;
 }
 </style>
