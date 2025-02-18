@@ -302,20 +302,21 @@
 
         <!-- 첨부파일형 -->
         <template v-if="surveyType === QuestType.FileUpload">
-          <div class="item_setting_area">
-            <div class="item-row mt12">
-              <div class="btn_add">
-                <q-icon
-                  name="image"
-                  class="icon_svg"
-                  style="font-size: 24px;"
-                />
-                <span class="title3 ml10 text-grey-5">
-                  이미지 / 파일첨부
-                </span>
-              </div>
-            </div>
-          </div>
+          <q-input
+            v-model="answerInput"
+            disable
+            fill
+            color="grey-4"
+            outlined
+            class="size_sm shadow add_item_btn"
+            placeholder="이미지 / 파일첨부"
+            style="margin: 12px 0 0 0"
+            readonly
+          >
+            <template v-slot:append>
+              <q-icon name="attachment" color="orange" />
+            </template>
+          </q-input>
         </template>
 
         <!-- 선호도형 -->
@@ -495,20 +496,24 @@
             </div>
           </template>
 
-          <!-- 파일첨부형 -->
+          <!-- 첨부파일형 -->
           <template v-else-if="surveyType == QuestType.FileUpload">
             <div class="item_answer_row">
-              <div class="wrap_counsel_form" style="margin-top: 12px;">
-                <q-btn
-                  fill
-                  color="grey-4"
-                  unelevated
-                  class="size_sm shadow add_item_btn disabled"
-                >
-                  <q-icon name="icon-photo" class="icon_svg"></q-icon>
-                  <span class="title3 ml10 text-white">이미지 / 파일첨부</span>
-                </q-btn>
-              </div>
+              <q-input
+                v-model="answerInput"
+                disable
+                fill
+                color="grey-4"
+                outlined
+                class="size_sm shadow add_item_btn"
+                placeholder="이미지 / 파일첨부"
+                style="margin: 12px 0 0 0"
+                readonly
+              >
+                <template v-slot:append>
+                  <q-icon name="attachment" color="orange" />
+                </template>
+              </q-input>
               <div style="margin-top: 10px;">
                 <p class="body3 text-grey-6 caution_desc">
                   * 1개의 이미지만 첨부 가능합니다.
