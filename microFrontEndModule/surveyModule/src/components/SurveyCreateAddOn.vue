@@ -105,7 +105,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, Ref, watch, inject, onMounted, nextTick } from 'vue';
+import { ref, type Ref, watch, inject, onMounted, nextTick } from 'vue';
 import { VueDraggableNext as Draggable } from 'vue-draggable-next';
 import type { FlexibleObject, SurveyPage } from '@/composables/survey-interface';
 import { SurveyStatus, SurveyOption } from '@/composables/survey-interface';

@@ -23,7 +23,7 @@
             <div class="badge_row">
               <q-badge :color="SURVEY_COLOR[props.surveyStat]" class="large34">{{ SURVEY_STATUS[props.surveyStat] }}</q-badge>
               <span outline class="large34" style="margin-left: 10px;">
-                {{ surveyPrdStrDtm }} ~ {{ surveyPrdEndDtm }}
+                {{ surveyStartDate }} ~ {{ surveyEndDate }}
               </span>
             </div>
 
@@ -37,7 +37,7 @@
                   </p>
                 </div>
                 <div class="banner_row">
-                  <img v-if="pageData.pageFileAwsObjNm" :src="getImageUrlForDisplay(pageData.pageFileAwsObjNm as string)" style="max-width: 680px" />
+                  <img v-if="pageData.pageImgFileName" :src="getImageUrlForDisplay(pageData.pageImgFileName as string)" style="max-width: 680px" />
                 </div>
               </div>
             </template>
@@ -56,11 +56,11 @@
                     <div class="item_title_row">
                       <q-badge color="grey-7" class="square">{{ String(secondIdx+1).padStart(2, '0') }}</q-badge>
                       <!-- 답변 필수 시 required 클래스 추가-->
-                      <h6 :class="{required:surveyData.esstlYn === 'Y' || surveyData.esstlYn.toString() === 'true'}" class="title1">{{ surveyData.questTitle }}</h6>
+                      <h6 :class="{required:surveyData.essentialYn === 'Y' || surveyData.essentialYn.toString() === 'true'}" class="title1">{{ surveyData.questTitle }}</h6>
                     </div>
                     <!-- 설명이 있을 시 표시 -->
-                    <p v-if="surveyData.questExpn" class="item_desc_row text-phara2">
-                      {{ surveyData.questExpn }}
+                    <p v-if="surveyData.questDepiction" class="item_desc_row text-phara2">
+                      {{ surveyData.questDepiction }}
                     </p>
 
                     <!-- 단답형 -->
@@ -115,7 +115,7 @@
                     <template v-else-if="surveyData.questType == QuestType.SingleChoice">
                       <div class="item_input">
                         <!-- 이미지 유무에 따른 목록 형태 변경 -->
-                        <template v-if="(surveyData.surveyQuestItemList as SurveyQuestItem[])?.find(ele => ele.itemImgFileAwsObjNm)">
+                        <template v-if="(surveyData.surveyQuestItemList as SurveyQuestItem[])?.find(ele => ele.itemImgFileName)">
                           <div class="row q-col-gutter-md">
                             <template v-for="(questData, thirdIdx) in surveyData.surveyQuestItemList" :key="`quest${thirdIdx}`">
                               <!-- 기타가 아닌 케이스만 처리(사유: 퍼블) -->
@@ -134,8 +134,8 @@
                                   </q-card-section>
                                   <q-card-section>
                                     <img
-                                      v-if="questData.itemImgFileAwsObjNm"
-                                      :src="getImageUrlForDisplay(questData.itemImgFileAwsObjNm as string)"
+                                      v-if="questData.itemImgFileName"
+                                      :src="getImageUrlForDisplay(questData.itemImgFileName as string)"
                                     />
                                   </q-card-section>
                                 </q-card>
@@ -205,7 +205,7 @@
                     <template v-else-if="surveyData.questType == QuestType.MultipleChoice">
                       <div class="item_input">
                         <!-- 이미지 유무에 따른 목록 형태 변경 -->
-                        <template v-if="(surveyData.surveyQuestItemList as SurveyQuestItem[])?.find(ele => ele.itemImgFileAwsObjNm)">
+                        <template v-if="(surveyData.surveyQuestItemList as SurveyQuestItem[])?.find(ele => ele.itemImgFileName)">
                           <div class="row q-col-gutter-md">
                             <template v-for="(questData, thirdIdx) in surveyData.surveyQuestItemList" :key="`quest${thirdIdx}`">
                               <!-- 기타가 아닌 케이스만 처리(사유: 퍼블) -->
@@ -224,8 +224,8 @@
                                     </q-card-section>
                                     <q-card-section>
                                       <img
-                                        v-if="questData.itemImgFileAwsObjNm"
-                                        :src="getImageUrlForDisplay(questData.itemImgFileAwsObjNm as string)"
+                                        v-if="questData.itemImgFileName"
+                                        :src="getImageUrlForDisplay(questData.itemImgFileName as string)"
                                       />
                                     </q-card-section>
                                   </q-card-section>
@@ -335,7 +335,7 @@
                                 * 1개의 이미지만 첨부 가능합니다.
                               </p>
                               <p class="body3 text-grey-6 caution_desc">
-                                * 10MB 이하의 이미지만 첨부하실 수 있습니다.
+                                * {{MaxFileSize.Number}}MB 이하의 이미지만 첨부하실 수 있습니다.
                               </p>
                             </template>
                           </div>
@@ -344,15 +344,15 @@
                     </template>
 
                     <!-- 선호도형 -->
-                    <template v-else-if="surveyData.questType == QuestType.Preference && surveyData.prfrTypeKnd == PreferType.Preference">
+                    <template v-else-if="surveyData.questType == QuestType.Preference && surveyData.preferTypeKind == PreferType.Preference">
                       <div class="item_input">
                         <div class="q-pa-md" style="width: 400px">
                           <div class="wrap_opt_radio">
                             <q-option-group
                               class="radio_group_custom type03"
                               v-model="dataOptionObject[`${idx}_${secondIdx}`]"
-                              :class="`count-${surveyData.prfrTypeMaxScr as number}`"
-                              :options="makeReferOption(surveyData.prfrTypeKnd as number, surveyData.prfrTypeMaxScr as number)"
+                              :class="`count-${surveyData.preferTypeMaxScore as number}`"
+                              :options="makeReferOption(surveyData.preferTypeKind as number, surveyData.preferTypeMaxScore as number)"
                             />
                           </div>
 
@@ -360,15 +360,15 @@
                             class="row justify-between q-mt-md"
                             style="padding: 0 13px"
                           >
-                            <div class="body3">{{ surveyData.prfrTypeStrItem }}</div>
-                            <div class="body3">{{ surveyData.prfrTypeEndItem }}</div>
+                            <div class="body3">{{ surveyData.preferTypeStartItem }}</div>
+                            <div class="body3">{{ surveyData.preferTypeEndItem }}</div>
                           </div>
                         </div>
                       </div>
                     </template>
 
                     <!-- 별점형 -->
-                    <template v-else-if="surveyData.questType == QuestType.Preference && surveyData.prfrTypeKnd == PreferType.StarRating">
+                    <template v-else-if="surveyData.questType == QuestType.Preference && surveyData.preferTypeKind == PreferType.StarRating">
                       <div
                         class="item_answer_row"
                         @mouseleave="confirmStar"
@@ -388,7 +388,7 @@
                     <!-- 시간 & 날짜형  -->
                     <template v-else-if="surveyData.questType == QuestType.Datetime">
                       <div class="item_answer_row row justify-start q-mt-md">
-                        <template v-if="surveyData.dtmTypeKnd == DatetimeType.Date || surveyData.dtmTypeKnd == DatetimeType.DateTime">
+                        <template v-if="surveyData.dateTypeKind == DatetimeType.Date || surveyData.dateTypeKind == DatetimeType.DateTime">
                           <div v-show="false">{{ setDefaultDate(`${idx}_${secondIdx}`)  }}</div>
                           <q-input
                             outlined
@@ -418,7 +418,7 @@
                             </template>
                           </q-input>
                         </template>
-                        <template v-if="surveyData.dtmTypeKnd == DatetimeType.Time || surveyData.dtmTypeKnd == DatetimeType.DateTime">
+                        <template v-if="surveyData.dateTypeKind == DatetimeType.Time || surveyData.dateTypeKind == DatetimeType.DateTime">
                           <div v-show="false">{{ setDefaultTime(`${idx}_${secondIdx}`) }}</div>
                           <q-input
                             outlined
@@ -545,8 +545,8 @@ const SURVEY_COLOR: { [key: number]: string } = {
   7: 'grey-6',
   8: 'green-5'
 };
-const surveyPrdStrDtm = ref(); // 설문 시작일
-const surveyPrdEndDtm = ref(); // 설문 종료일
+const surveyStartDate = ref(); // 설문 시작일
+const surveyEndDate = ref(); // 설문 종료일
 const rspnModfPosbYn = ref(false); // 설문 수정가능 여부
 
 
@@ -694,7 +694,7 @@ const increasePage = (): void => {
   let validationText = ''; // 예외처리 문구
   const questList = (surveyParams.value as SurveyInterface).surveyPageList[nowPage.value].surveyQuestList;
   questList.some((ele, idx) => {
-    if(ele.esstlYn === 'Y'){
+    if(ele.essentialYn === 'Y'){
       // 단일 & 복수 선택 기타 항목 존재 시 index
       const etcItemIdx = ele.surveyQuestItemList?.reduce((acc: number, innerEle: SurveyQuestItem, idx: number) => {
         if(innerEle.etcAddItemYn === 'Y') acc = idx+1;
@@ -744,9 +744,9 @@ const increasePage = (): void => {
 
         // 선호도
         case QuestType.Preference:
-          if(ele.prfrTypeKnd == PreferType.Preference && !dataOptionObject.value[`${nowPage.value}_${idx}`]){ // 선호도
+          if(ele.preferTypeKind == PreferType.Preference && !dataOptionObject.value[`${nowPage.value}_${idx}`]){ // 선호도
             validationText = `필수 항목 ${nowPage.value+1}페이지의 ${idx+1}의 선호도가 선택되지 않았습니다.`
-          } else if(ele.prfrTypeKnd == PreferType.StarRating && !hoveredIndexObject.value[`${nowPage.value}_${idx}`]){ // 별점
+          } else if(ele.preferTypeKind == PreferType.StarRating && !hoveredIndexObject.value[`${nowPage.value}_${idx}`]){ // 별점
             validationText = `필수 항목 ${nowPage.value+1}페이지의 ${idx+1}의 별점이 선택되지 않았습니다.`
           }
         break;
@@ -775,8 +775,8 @@ const surveyParams = ref<SurveyInterface>(); // 미등록 설문조사 데이터
 // 이니셜라이저 메소드
 const init = (): void => {
   // 데이터 바인딩
-  surveyPrdStrDtm.value = surveyParams.value!.surveyPrdStrDate // 설문 시작일
-  surveyPrdEndDtm.value = surveyParams.value!.surveyPrdEndDate // 설문 종료일
+  surveyStartDate.value = surveyParams.value!.surveyStartDate // 설문 시작일
+  surveyEndDate.value = surveyParams.value!.surveyEndDate // 설문 종료일
   rspnModfPosbYn.value = Boolean(surveyParams.value!.rspnModfPosbYn === 'Y') // 설문 수정 유무
   surveyPageList.value = surveyParams.value!.surveyPageList // 설문 페이지 정보
 }

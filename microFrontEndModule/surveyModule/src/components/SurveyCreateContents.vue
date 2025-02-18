@@ -99,7 +99,7 @@
       <template v-else>
         <template v-if="[SurveyStatus.Drafting, SurveyStatus.Temp, SurveyStatus.NotStarted].indexOf(props.surveyStat) > -1">
           <p class="body3">
-            * 10MB 이하의 1개 이미지만 첨부하실 수 있습니다.
+            * {{ MaxFileSize.Number }}MB 이하의 1개 이미지만 첨부하실 수 있습니다.
           </p>
           <p class="body3">
             * jpg, jpeg, png, bmp, gif, psd, pdf 확장자만 등록
@@ -114,7 +114,7 @@
 <script lang="ts" setup>
 import { ref, onMounted, onUnmounted, watch } from 'vue';
 import type { SurveyInterface, SurveyPage } from '@/composables/survey-interface';
-import { SurveyStatus } from '@/composables/survey-interface';
+import { MaxFileSize, SurveyStatus } from '@/composables/survey-interface';
 import eventBus from '@/composables/survey-event-bus';
 import { Dialog } from 'quasar';
 
@@ -179,7 +179,7 @@ const addFile = (file: any) => {
 const onFileRejected = (rejectedEntries: any[]) => {
   if(rejectedEntries[0].failedPropValidation === 'max-file-size'){
     Dialog.create({
-      message: '10MB 이하의 1개 이미지만 첨부하실 수 있습니다.',
+      message: `${MaxFileSize.Number}MB 이하의 1개 이미지만 첨부하실 수 있습니다.`,
     });
   }
   if(rejectedEntries[0].failedPropValidation === 'accept'){
@@ -216,7 +216,7 @@ const addParameters = (params: SurveyInterface): SurveyInterface => {
     pageSeq: props.surveyPageSeq+1,
     pageTitle: pageNm.value,
     pageExpn: pageExpn.value,
-    pageFileAwsObjNm: imageUrl.value,
+    pageImgFileName: attachImage.value?.name, // 파일명 추출
     pageImgFileUploaded: attachImage.value? true : false,
     surveyQuestList:[]
   } as SurveyPage
@@ -297,8 +297,8 @@ watch(() => props.sureyParams, () => {
     pageNm.value = props.sureyParams.pageNm;
     pageExpn.value = props.sureyParams.pageExpn;
 
-    if(props.sureyParams.pageFileAwsObjNm){
-      imageUrl.value = props.sureyParams.pageFileAwsObjNm;
+    if(props.sureyParams.pageImgFileName){
+      imageUrl.value = props.sureyParams.pageImgFileName;
       attachImage.value = new File([], props.sureyParams.pageFileRealNm, { type: 'image/png' });
     }
   }

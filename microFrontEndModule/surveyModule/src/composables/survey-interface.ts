@@ -35,10 +35,8 @@ export interface SurveyInterface {
   surveyId?: number;
   surveyStat?: SurveyStatus;
   tempYn: string;
-  surveyPrdStrDate: string;
-  surveyPrdEndDate: string;
-  surveyPrdStrDtm?: string;
-  surveyPrdEndDtm?: string;
+  surveyStartDate: string;
+  surveyEndDate: string;
   surveyCandAnymYn: string;
   rspnModfPosbYn: string;
   surveyPageList: SurveyPage[],
@@ -54,7 +52,7 @@ export interface SurveyPage {
   pageNm?: string;
   pageTitle: string;
   pageExpn: string;
-  pageFileAwsObjNm?: string;
+  pageImgFileName?: string;
   pageImgFileUploaded: boolean;
   pageFileDeleted?: boolean;
   pageFileUploaded?: boolean;
@@ -65,16 +63,16 @@ export interface SurveyPage {
 export interface SurveyQuest {
   queryId?: number;
   questId?: number;
-  prfrTypeMaxScr?: number;
-  prfrTypeEndItem?: string;
-  dtmTypeKnd?: number;
-  esstlYn: 'Y' | 'N';
-  questExpn: string;
+  essentialYn: 'Y' | 'N';
   questTitle: string;
-  prfrTypeKnd?: number;
-  prfrTypeStrItem?: string;
+  questDepiction: string;
   questType: number;
   questSeq: number;
+  dateTypeKind?: number;
+  preferTypeKind?: number;
+  preferTypeMaxScore?: number;
+  preferTypeStartItem?: string;
+  preferTypeEndItem?: string;
   surveyQuestItemList?: SurveyQuestItem[];
 }
 
@@ -83,8 +81,8 @@ export interface SurveyQuestItem {
   queryTypeId?: number;
   itemId?: number;
   itemNm: string;
-  itemImgFileAwsObjNm?: string;
-  itemImgFileRealNm?: string;
+  itemImgFileName?: string;
+  itemImgFileRealName?: string;
   itemImgFileUploaded: boolean;
   itemImgFileDeleted?: boolean;
   etcAddItemYn: 'Y' | 'N';
@@ -202,117 +200,6 @@ export const SurveyOption = {
 
 /* 첨부 파일 크기 제한 config */
 export const MaxFileSize = {
-  Byte: 10*1024*1024, // 10mb
-  Number: 10
-}
-
-
-/* 설문 리스트 */
-// 설문 목록 인터페이스
-export interface SurveyList {
-  totalCnt?: number;
-  totalPageNum?: number;
-  currentPageNo?: number;
-  surveyList: SurveyListData[]
-}
-
-// 설문 목록 데이터 인터페이스
-export interface SurveyListData {
-  surveyId: number;
-  surveyStat: number;
-  surveyStatNm: string;
-  surveyTitle: string;
-  surveyPrdStrDtm: string;
-  surveyPrdEndDtm: string;
-  surveyPtctCnt: number;
-  surveyPtctTotal: number;
-  surveyPtctPercentage: number;
-  crtrNm: string;
-  finalChgDtm: string;
-  pushCnt: number;
-  firstCrtrId: string;
-  surveyCreatedByUser: boolean;
-}
-
-// 설문 목록 조회 파라미터
-export interface SurveryListParam {
-  mySurveyYn: 'Y'|'N';
-  surveyPrdStrDtm: string;
-  surveyPrdEndDtm: string;
-  searchKeyword?: string;
-  listNum: number;
-  pageNo: number;
-  surveyStat: number;
-}
-
-
-
-/* 설문 결과 */
-// 설문 결과 인터페이스
-export interface SurveyResult {
-  surveyId: number;
-  surveyStat: SurveyStatus;
-  surveyStatNm: string;
-  surveyPrdStrDtm: string;
-  surveyPrdEndDtm: string;
-  surveyTitle: string;
-  surveyTotPtctNum: number;
-  surveyPtctCnt: number;
-  surveyNonPtctCnt: number;
-  surveyPtctPercentage: number;
-  surveyQuestResultList: SurveyResultQuest[];
-}
-
-// 설문 결과 세부 질문 인터페이스
-export interface SurveyResultQuest {
-  questId: number;
-  questType: QuestType;
-  questTypeNm: string;
-  questTitle: string;
-  questPtctCnt: number;
-  questNonPtctCnt: number;
-  esstlYn: 'Y' | 'N';
-  rspnCntnList?: string[]; // 일반 텍스트형
-  dtmRspnValList?: string[]; // 날짜시간형
-  attchFileList?: SurveyResultFileItem[]; // 파일첨부형
-  prfrRspnList?: SurveyResultTypePreferenceItem[]; // 선호도형
-  questTypeSelectRspnList?: SurveyResultQuestItem[]; // 단일,복수선택형
-  etcRspnCntnList?: SurveyResultEtcItem[]; // 기타값
-}
-
-
-// 설문 결과 질문 항목 인터페이스
-export interface SurveyResultQuestItem {
-  itemId: number;
-  itemNm: string;
-  selectCnt: number;
-  selectPercentage: number;
-}
-
-// 설문 결과 파일 항목 인터페이스
-export interface SurveyResultFileItem {
-  attchFileId: number;
-  fileSeq: number;
-  fileRealNm: string;
-  awsObjNm: string;
-  fileType: string;
-}
-
-// 설문 결과 선호도 항목 인터페이스
-export interface SurveyResultTypePreferenceItem {
-  prfrRspnVal: string;
-  prfrRspnCnt: number;
-  prfrRspnPercentage: number;
-}
-
-// 설문 결과 기타 응답 인터페이스
-export interface SurveyResultEtcItem {
-  etcRspnCntn: string;
-  etcRspnCntnCnt: number;
-}
-
-// 설문 일자별 결과
-export interface SurveyResultPerDay {
-  date: string;
-  surveyPtctCnt: number;
+  Byte: 5*1024*1024, // 5mb
+  Number: 5
 }

@@ -1,127 +1,129 @@
 <template>
   <table class="survey-table">
-    <tr>
-      <th class="body2">
-        <span class="required">기간 설정</span>
-      </th>
-      <td colspan="3">
-        <div class="row-4">
-          <q-input
-            :disabled="[SurveyStatus.Started, SurveyStatus.Extended, SurveyStatus.Stopped, SurveyStatus.EndedEarly, SurveyStatus.Ended].indexOf(props.surveyStat) > -1"
-            :class="{disabled: [SurveyStatus.Started, SurveyStatus.Extended, SurveyStatus.Stopped, SurveyStatus.EndedEarly, SurveyStatus.Ended].indexOf(props.surveyStat) > -1}"
-            outlined
-            v-model="startDate"
-            class="inp_date normal"
-            style="margin-right: 4px"
-          >
-            <template v-slot:append>
-              <q-icon
-                :class="{disabled: [SurveyStatus.Started, SurveyStatus.Extended, SurveyStatus.Stopped, SurveyStatus.EndedEarly, SurveyStatus.Ended].indexOf(props.surveyStat) > -1}"
-                name="date_range"
-                class="icon_svg cursor-pointer"
-              >
-                <q-popup-proxy
-                  v-if="[SurveyStatus.Started, SurveyStatus.Extended, SurveyStatus.Stopped, SurveyStatus.EndedEarly, SurveyStatus.Ended].indexOf(props.surveyStat) === -1"
-                  ref="qDateProxyFrom"
-                  cover
-                  transition-show="scale"
-                  transition-hide="scale"
+    <tbody>
+      <tr>
+        <th class="body2">
+          <span class="required">기간 설정</span>
+        </th>
+        <td colspan="3">
+          <div class="row-4">
+            <q-input
+              :disabled="[SurveyStatus.Started, SurveyStatus.Extended, SurveyStatus.Stopped, SurveyStatus.EndedEarly, SurveyStatus.Ended].indexOf(props.surveyStat) > -1"
+              :class="{disabled: [SurveyStatus.Started, SurveyStatus.Extended, SurveyStatus.Stopped, SurveyStatus.EndedEarly, SurveyStatus.Ended].indexOf(props.surveyStat) > -1}"
+              outlined
+              v-model="startDate"
+              class="inp_date normal"
+              style="margin-right: 4px"
+            >
+              <template v-slot:append>
+                <q-icon
+                  :class="{disabled: [SurveyStatus.Started, SurveyStatus.Extended, SurveyStatus.Stopped, SurveyStatus.EndedEarly, SurveyStatus.Ended].indexOf(props.surveyStat) > -1}"
+                  name="date_range"
+                  class="icon_svg cursor-pointer"
                 >
-                  <q-date
-                    minimal
-                    mask="YYYY.MM.DD"
-                    v-model="startDate"
-                    :options="disablePastDates"
-                    @update:modelValue="()=>{($refs.qDateProxyFrom as any).hide()}"
+                  <q-popup-proxy
+                    v-if="[SurveyStatus.Started, SurveyStatus.Extended, SurveyStatus.Stopped, SurveyStatus.EndedEarly, SurveyStatus.Ended].indexOf(props.surveyStat) === -1"
+                    ref="qDateProxyFrom"
+                    cover
+                    transition-show="scale"
+                    transition-hide="scale"
                   >
-                  </q-date>
-                </q-popup-proxy>
-              </q-icon>
-            </template>
-          </q-input>
-          <div class="tilde">
-            <span>~</span>
+                    <q-date
+                      minimal
+                      mask="YYYY.MM.DD"
+                      v-model="startDate"
+                      :options="disablePastDates"
+                      @update:modelValue="()=>{($refs.qDateProxyFrom as any).hide()}"
+                    >
+                    </q-date>
+                  </q-popup-proxy>
+                </q-icon>
+              </template>
+            </q-input>
+            <div class="tilde">
+              <span>~</span>
+            </div>
+            <q-input
+              :readonly="[SurveyStatus.EndedEarly, SurveyStatus.Ended].indexOf(props.surveyStat) > -1"
+              :class="{disabled: [SurveyStatus.EndedEarly, SurveyStatus.Ended].indexOf(props.surveyStat) > -1}"
+              outlined
+              v-model="endDate"
+              class="inp_date normal"
+              style="margin-right: 4px"
+            >
+              <template v-slot:append>
+                <q-icon
+                  :class="{disabled: [SurveyStatus.EndedEarly, SurveyStatus.Ended].indexOf(props.surveyStat) > -1}"
+                  name="date_range"
+                  class="icon_svg cursor-pointer"
+                >
+                  <q-popup-proxy
+                    v-if="[SurveyStatus.EndedEarly, SurveyStatus.Ended].indexOf(props.surveyStat) === -1"
+                    ref="qDateProxyFrom"
+                    cover
+                    transition-show="scale"
+                    transition-hide="scale"
+                  >
+                    <q-date
+                      minimal
+                      mask="YYYY.MM.DD"
+                      v-model="endDate"
+                      :options="disableBeforeStartDate"
+                      @update:modelValue="()=>{($refs.qDateProxyFrom as any).hide()}"
+                    >
+                    </q-date>
+                  </q-popup-proxy>
+                </q-icon>
+              </template>
+            </q-input>
           </div>
-          <q-input
-            :readonly="[SurveyStatus.EndedEarly, SurveyStatus.Ended].indexOf(props.surveyStat) > -1"
-            :class="{disabled: [SurveyStatus.EndedEarly, SurveyStatus.Ended].indexOf(props.surveyStat) > -1}"
-            outlined
-            v-model="endDate"
-            class="inp_date normal"
-            style="margin-right: 4px"
-          >
-            <template v-slot:append>
-              <q-icon
-                :class="{disabled: [SurveyStatus.EndedEarly, SurveyStatus.Ended].indexOf(props.surveyStat) > -1}"
-                name="date_range"
-                class="icon_svg cursor-pointer"
-              >
-                <q-popup-proxy
-                  v-if="[SurveyStatus.EndedEarly, SurveyStatus.Ended].indexOf(props.surveyStat) === -1"
-                  ref="qDateProxyFrom"
-                  cover
-                  transition-show="scale"
-                  transition-hide="scale"
-                >
-                  <q-date
-                    minimal
-                    mask="YYYY.MM.DD"
-                    v-model="endDate"
-                    :options="disableBeforeStartDate"
-                    @update:modelValue="()=>{($refs.qDateProxyFrom as any).hide()}"
-                  >
-                  </q-date>
-                </q-popup-proxy>
-              </q-icon>
-            </template>
-          </q-input>
-        </div>
-      </td>
-    </tr>
-    <tr>
-      <th class="body2">
-        <span class="required">익명여부</span>
-      </th>
-      <td>
-        <q-radio
-          v-model="surveyCandAnymYn"
-          val="Y"
-          label="Y"
-          color="black"
-          class="check_to_radio"
-        />
-        <q-radio
-          v-model="surveyCandAnymYn"
-          val="N"
-          label="N"
-          color="black"
-          class="check_to_radio"
-          style="margin-right: 10px"
-        />
-      </td>
-      <th class="body2">
-        <span class="required">참여 후 수정</span>
-      </th>
-      <td>
-        <q-radio
-          :disable="[SurveyStatus.EndedEarly, SurveyStatus.Ended].indexOf(props.surveyStat) > -1"
-          v-model="rspnModfPosbYn"
-          val="Y"
-          label="Y"
-          color="black"
-          class="check_to_radio"
-        />
-        <q-radio
-          :disable="[SurveyStatus.EndedEarly, SurveyStatus.Ended].indexOf(props.surveyStat) > -1"
-          v-model="rspnModfPosbYn"
-          val="N"
-          label="N"
-          color="black"
-          class="check_to_radio"
-          style="margin-right: 10px"
-        />
-      </td>
-    </tr>
+        </td>
+      </tr>
+      <tr>
+        <th class="body2">
+          <span class="required">익명여부</span>
+        </th>
+        <td>
+          <q-radio
+            v-model="surveyCandAnymYn"
+            val="Y"
+            label="Y"
+            color="black"
+            class="check_to_radio"
+          />
+          <q-radio
+            v-model="surveyCandAnymYn"
+            val="N"
+            label="N"
+            color="black"
+            class="check_to_radio"
+            style="margin-right: 10px"
+          />
+        </td>
+        <th class="body2">
+          <span class="required">참여 후 수정</span>
+        </th>
+        <td>
+          <q-radio
+            :disable="[SurveyStatus.EndedEarly, SurveyStatus.Ended].indexOf(props.surveyStat) > -1"
+            v-model="rspnModfPosbYn"
+            val="Y"
+            label="Y"
+            color="black"
+            class="check_to_radio"
+          />
+          <q-radio
+            :disable="[SurveyStatus.EndedEarly, SurveyStatus.Ended].indexOf(props.surveyStat) > -1"
+            v-model="rspnModfPosbYn"
+            val="N"
+            label="N"
+            color="black"
+            class="check_to_radio"
+            style="margin-right: 10px"
+          />
+        </td>
+      </tr>
+    </tbody>
   </table>
 </template>
 
@@ -133,10 +135,6 @@ import { SurveyStatus } from '@/composables/survey-interface';
 import eventBus from '@/composables/survey-event-bus';
 import { useSurveyStore } from '@/stores/survey-store';
 const store = useSurveyStore();
-
-/* 에밋 선언 */
-// 데이터 조회, 권한 모달 열기
-const emit = defineEmits(['searchData','openAuthModal']);
 
 /* 프롭 선언 */
 const props = defineProps({
@@ -215,8 +213,8 @@ const rspnModfPosbYn = computed({
 const createSearchParams = (isPreview: boolean): SurveyInterface => {
   const params: SurveyInterface = {
     tempYn : 'N', // 디폴트는 N 설문 저장 단계에서 변경
-    surveyPrdStrDate : startDate.value,
-    surveyPrdEndDate : endDate.value,
+    surveyStartDate : startDate.value,
+    surveyEndDate : endDate.value,
     surveyCandAnymYn : store.surveyCandAnymYn,
     rspnModfPosbYn : store.rspnModfPosbYn,
     surveyPageList: [], // 설문 페이지 리스트(이벤트 버스에서 다음 이벤트에서 값을 담음)
@@ -241,8 +239,8 @@ onUnmounted(() => {
 
 /* 등록 설문일 경우 데이터 바인딩 */
 watch(() => props.filterData, () => {
-  startDate.value = props.filterData.surveyPrdStrDtm;
-  endDate.value = props.filterData.surveyPrdEndDtm;
+  startDate.value = props.filterData.surveyStartDate;
+  endDate.value = props.filterData.surveyEndDate;
   surveyCandAnymYn.value = props.filterData.surveyCandAnymYn;
   rspnModfPosbYn.value = props.filterData.rspnModfPosbYn;
 },{ deep: true });

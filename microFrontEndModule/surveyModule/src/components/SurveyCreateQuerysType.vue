@@ -99,7 +99,7 @@
         <template v-if="surveyType === QuestType.SingleChoice">
           <div v-if="[SurveyStatus.Drafting, SurveyStatus.Temp, SurveyStatus.NotStarted].indexOf(props.surveyStat) > -1" class="control_box" style="margin: 0;">
             <p class="body3">
-              * 항목에 이미지 첨부 시 10MB 이하 이미지를 사용해 주세요.
+              * 항목에 이미지 첨부 시 {{MaxFileSize.Number}}MB 이하 이미지를 사용해 주세요.
             </p>
           </div>
           <div style="display: inline-grid;">
@@ -202,7 +202,7 @@
         <template v-if="surveyType === QuestType.MultipleChoice">
           <div v-if="[SurveyStatus.Drafting, SurveyStatus.Temp, SurveyStatus.NotStarted].indexOf(props.surveyStat) > -1" class="control_box" style="margin: 0;">
             <p class="body3">
-              * 항목에 이미지 첨부 시 10MB 이하 이미지를 사용해 주세요.
+              * 항목에 이미지 첨부 시 {{MaxFileSize.Number}}MB 이하 이미지를 사용해 주세요.
             </p>
           </div>
           <div style="display: inline-grid;">
@@ -439,7 +439,7 @@
         <div class="answer_item" style="pointer-events: none;">
           <div class="item_title_row">
             <q-badge color="grey-7" class="square">{{ String(querySeq+1).padStart(2, '0') }}</q-badge>
-            <h6 :class="{required:props.queryParam?.esstlYn === 'Y' || props.queryParam?.esstlYn.toString() === 'true' || mandatoryCheck}" class="title1">
+            <h6 :class="{required:props.queryParam?.essentialYn === 'Y' || props.queryParam?.essentialYn.toString() === 'true' || mandatoryCheck}" class="title1">
               {{ questionInput }}
             </h6>
           </div>
@@ -519,7 +519,7 @@
                   * 1개의 이미지만 첨부 가능합니다.
                 </p>
                 <p class="body3 text-grey-6 caution_desc">
-                  * 10MB 이하의 이미지만 첨부하실 수 있습니다.
+                  * {{ MaxFileSize.Number }}MB 이하의 이미지만 첨부하실 수 있습니다.
                 </p>
               </div>
             </div>
@@ -1107,8 +1107,8 @@ const addParameters = (params: SurveyInterface): SurveyInterface => {
     questId: props.queryParam?.questId,
     questFakeId: props.queryNumber, // 고유값 다 사용 후 제거.
     questTitle: questionInput.value,
-    questExpn: descriptionInput.value,
-    esstlYn: mandatoryCheck.value? 'Y':'N',
+    questDepiction: descriptionInput.value,
+    essentialYn: mandatoryCheck.value? 'Y':'N',
     questType : surveyType.value,
     questSeq : props.querySeq+1,
   } as SurveyQuest
@@ -1125,7 +1125,7 @@ const addParameters = (params: SurveyInterface): SurveyInterface => {
       const queryParam = {
         itemNm: ele.itemNm,
         itemImgFileUploaded: attachImageList.value[idx]? true : false,
-        itemImgFileAwsObjNm: imageUrlList.value[idx],
+        itemImgFileName: attachImageList.value[idx]?.name,
         etcAddItemYn: 'N',
       } as SurveyQuestItem
 
@@ -1134,7 +1134,7 @@ const addParameters = (params: SurveyInterface): SurveyInterface => {
         queryParam.itemId = ele.itemId; // 식별을 위한 itemId 추가
 
         // 원본 파일명
-        const originFileName = props.queryParam?.surveyQuestItemList.find((element: SurveyQuestItem)=> ele.itemId == element.itemId )?.itemImgFileRealNm;
+        const originFileName = props.queryParam?.surveyQuestItemList.find((element: SurveyQuestItem)=> ele.itemId == element.itemId )?.itemImgFileRealName;
         if(!originFileName && attachImageList.value[idx]) { // 이미지 신규 등록
           queryParam.itemImgFileDeleted = false;
           queryParam.itemImgFileUploaded = true;
@@ -1187,15 +1187,15 @@ const addParameters = (params: SurveyInterface): SurveyInterface => {
 
   // 선호도형
   if(surveyType.value === QuestType.Preference){
-    param['prfrTypeKnd'] = preferValue.value;
-    param['prfrTypeStrItem'] = leftInput.value;
-    param['prfrTypeEndItem'] = rightInput.value;
-    param['prfrTypeMaxScr'] = rightValue.value;
+    param['preferTypeKind'] = preferValue.value;
+    param['preferTypeStartItem'] = leftInput.value;
+    param['preferTypeEndItem'] = rightInput.value;
+    param['preferTypeMaxScore'] = rightValue.value;
   }
 
   // 날짜형
   if(surveyType.value === QuestType.Datetime){
-    param['dtmTypeKnd'] = dateType.value;
+    param['dateTypeKind'] = dateType.value;
   }
 
   const surveyQuestList = (params['surveyPageList']).find(ele => {
@@ -1246,9 +1246,9 @@ watch(() => props.queryParam, () => {
   if(props.queryParam){
     // 공통, 단답, 장문, 단일, 복수, 파일첨부형까지 값 바인딩
     surveyType.value = props.queryParam?.questType;
-    mandatoryCheck.value = Boolean(props.queryParam?.esstlYn==='Y');
+    mandatoryCheck.value = Boolean(props.queryParam?.essentialYn==='Y');
     questionInput.value = props.queryParam?.questTitle;
-    descriptionInput.value = props.queryParam?.questExpn;
+    descriptionInput.value = props.queryParam?.questDepiction;
     itemCount.value = props.queryParam?.surveyQuestItemList?.length;
     onEtc.value = Boolean(props.queryParam?.surveyQuestItemList.find((ele: SurveyQuestItem)=>ele.etcAddItemYn === 'Y'));
     radioInputArray.value = [...props.queryParam?.surveyQuestItemList];
@@ -1259,20 +1259,20 @@ watch(() => props.queryParam, () => {
     }
     // 단일, 복수형 이미지 파일 처리
     props.queryParam?.surveyQuestItemList.forEach((ele: SurveyQuestItem, idx: number) => {
-      if(ele.itemImgFileAwsObjNm){
-        imageUrlList.value[idx] = ele.itemImgFileAwsObjNm;
-        attachImageList.value[idx] = new File([], ele.itemImgFileRealNm as string, { type: 'image/png' });
+      if(ele.itemImgFileName){
+        imageUrlList.value[idx] = ele.itemImgFileName;
+        attachImageList.value[idx] = new File([], ele.itemImgFileRealName as string, { type: 'image/png' });
       }
     });
 
     // 선호도형
-    preferValue.value = props.queryParam?.prfrTypeKnd;
-    leftInput.value = props.queryParam?.prfrTypeStrItem;
-    rightInput.value = props.queryParam?.prfrTypeEndItem;
-    rightValue.value = props.queryParam?.prfrTypeMaxScr;
+    preferValue.value = props.queryParam?.preferTypeKind;
+    leftInput.value = props.queryParam?.preferTypeStartItem;
+    rightInput.value = props.queryParam?.preferTypeEndItem;
+    rightValue.value = props.queryParam?.preferTypeMaxScore;
 
     // 날짜형
-    dateType.value = props.queryParam?.dtmTypeKnd;
+    dateType.value = props.queryParam?.dateTypeKind;
   }
 },{ deep: true, immediate: true });
 
