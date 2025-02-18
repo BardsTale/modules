@@ -27,7 +27,7 @@
           class="body2"
           label="필수여부"
         />
-        <div style="flex: 1;">
+        <div style="flex: 1; padding-left: 10px;">
           <q-icon
             v-if="[SurveyStatus.Drafting, SurveyStatus.Temp, SurveyStatus.NotStarted].indexOf(props.surveyStat) > -1"
             name="content_copy"
@@ -306,8 +306,9 @@
             <div class="item-row mt12">
               <div class="btn_add">
                 <q-icon
-                  name="icon-photo-grey"
+                  name="image"
                   class="icon_svg"
+                  style="font-size: 24px;"
                 />
                 <span class="title3 ml10 text-grey-5">
                   이미지 / 파일첨부
@@ -789,7 +790,7 @@
 import { ref, onMounted, onUnmounted, watch } from 'vue';
 import { date } from 'quasar';
 import type { FlexibleObject, SurveyInterface, SurveyQuest, SurveyQuestItem } from '@/composables/survey-interface';
-import { SurveyOption, QuestType, PreferType, DatetimeType, SurveyStatus } from '@/composables/survey-interface';
+import { SurveyOption, QuestType, PreferType, DatetimeType, SurveyStatus, MaxFileSize } from '@/composables/survey-interface';
 import eventBus from '@/composables/survey-event-bus';
 import { Dialog } from 'quasar';
 
@@ -949,8 +950,7 @@ const decreaseItemCount = (event: Event, go:object, num: number, isEtc: boolean)
 }
 
 // 이미지 첨부
-const MAX_FILE_SIZE_MB = ref(1024*1024); // 최대 사이즈
-const pctrModal = ref(); // 공용 파일 선택 모달
+const MAX_FILE_SIZE_MB = ref(MaxFileSize.Byte); // 최대 사이즈
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const fileRefs = ref<any[]>([]); // q-file 컴포넌트 refs.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -969,7 +969,7 @@ const onFilePicker = (index: number) => {
 const onFileRejected = (rejectedEntries: any[]) => {
   if(rejectedEntries[0].failedPropValidation === 'max-file-size'){
     Dialog.create({
-      message: '10MB 이하의 1개 이미지만 첨부하실 수 있습니다.',
+      message: `${MaxFileSize.Number}MB 이하의 1개 이미지만 첨부하실 수 있습니다.`,
     });
   }
   if(rejectedEntries[0].failedPropValidation === 'accept'){
@@ -1278,25 +1278,6 @@ const getImageUrlForDisplay = (fileKey: string): string => {
 };
 </script>
 <style lang="scss" scoped>
-
-
-.total_wrap {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 24px;
-}
-.wrap_table_box {
-  margin: 0 !important;
-}
-.lh_area {
-  flex: 1;
-  position: relative;
-}
-.rh_area {
-  width: 129px;
-}
 .survey-table {
   width: 100%;
   border-collapse: collapse;
@@ -1329,16 +1310,6 @@ const getImageUrlForDisplay = (fileKey: string): string => {
   }
 }
 
-.set_contents {
-  padding: 25px;
-  border-radius: 10px;
-  background-color: #fff;
-  h4 {
-    font-size: 16px;
-    font-weight: bold;
-    margin-bottom: 16px;
-  }
-}
 
 .set_params {
   margin: 20px 0 0 0;
@@ -1350,17 +1321,6 @@ const getImageUrlForDisplay = (fileKey: string): string => {
 .wrap_textarea {
   margin: 8px 0 0 0;
 }
-.file-add {
-  margin: 8px 0 0 0;
-}
-.caution {
-  margin: 16px 0 0 0;
-  padding: 16px 0 0 0;
-  border-top: 1px solid #cccccc;
-  p {
-    color: $grey-3;
-  }
-}
 .handle {
   text-align: center;
   cursor: grab;
@@ -1370,80 +1330,11 @@ const getImageUrlForDisplay = (fileKey: string): string => {
   margin: 12px 0 0 0;
 }
 
-.add_btn_ara {
-  text-align: center;
-  margin: 20px 0 0 0;
-}
-
-.confirm_area {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  padding: 25px 0 20px;
-  margin: 20px 0 0 0;
-}
-
-.btn_title3 {
-  margin: 2px 0 0 10px;
-  color: $grey-1;
-}
-
 .control_box {
   background-color: #fff;
   padding: 16px 12px 12px;
   border-radius: 10px;
   margin: 12px 0 0 0;
-}
-
-.page_list {
-  margin: 12px 0 0 0;
-}
-
-.page_btn {
-  @include flex_row_between;
-  border: 1px solid #e5e5e5;
-  border-radius: 8px;
-  padding: 12px;
-  height: 40px;
-  margin: 0 0 4px 0;
-  &.page_btn_on {
-    color: #fff;
-    background-color: #2e9dd1;
-    border: 1px solid #257ea7;
-    .page_text {
-      color: $white;
-    }
-  }
-}
-
-.page_add_btn {
-  border: 1px solid #e5e5e5;
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 93px;
-}
-
-.page_text {
-  color: $grey-3;
-  font-size: 12px;
-  line-height: 12px;
-  font-weight: 700;
-}
-
-.top_btn {
-  position: absolute;
-  right: 0;
-  top: 60%;
-}
-
-.file-add {
-  @include flex_row_start;
-  gap: 20px;
 }
 
 .edit_complete {
@@ -1472,16 +1363,6 @@ const getImageUrlForDisplay = (fileKey: string): string => {
     color: $orange;
     margin: 0 0 0 4px;
   }
-}
-
-.icons {
-  margin-left: auto;
-}
-
-.content_title_wrap {
-  @include flex_row_between;
-  gap: 10px;
-  margin: 0 0 16px 0;
 }
 
 .text-phara2 {
@@ -1811,301 +1692,6 @@ body {
   }
 }
 
-.total_wrap {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 24px;
-  .wrap_table_box {
-    margin: 0 0 20px 0 !important;
-  }
-  .lh_area {
-    flex: 1;
-    position: relative;
-  }
-  .rh_area {
-    width: 129px;
-  }
-  .survey-table {
-    width: 100%;
-    border-collapse: collapse;
-    border-top: 1px solid #000;
-    tr {
-      height: 58px;
-    }
-    th {
-      padding: 0 0 0 24px;
-      width: 180px !important;
-      border-bottom: 1px solid #ccc;
-      .required::after {
-        display: inline-block;
-        content: '*';
-        padding-left: 5px;
-        color: #ed1c24;
-      }
-    }
-    td {
-      padding: 0 10px;
-      border-bottom: 1px solid #ccc;
-      &.size_40 {
-        width: 40%;
-      }
-    }
-    th {
-      text-align: left;
-      background-color: #f2f2f2;
-      width: 120px;
-    }
-  }
-
-  .set_contents {
-    padding: 25px;
-    border-radius: 10px;
-    background-color: #fff;
-    h4 {
-      font-size: 16px;
-      font-weight: bold;
-      margin-bottom: 16px;
-    }
-    &.mt_20 {
-      margin-top: 20px;
-    }
-  }
-
-  .set_params {
-    margin: 20px 0 0 0;
-    padding: 10px 25px 25px;
-    border-radius: 10px;
-    background-color: #fff;
-    .item-row {
-      display: flex;
-      align-items: center;
-      margin-top: 8px;
-      .photo-icon {
-        margin-left: 10px;
-      }
-      .handle {
-        cursor: grab;
-        margin: 0 9px 0 0;
-      }
-      &.mt12 {
-        margin-top: 12px;
-      }
-      .btn_add {
-        width: 100%;
-        height: 40px;
-        @include flex_row_center;
-        border-radius: 8px;
-        border: 1px solid $grey-5;
-        background-color: $grey-7;
-      }
-      &.fav_type_top {
-        gap: 24px;
-      }
-      &.fav_type_btm {
-        gap: 20px;
-        .q-input {
-          width: 160px;
-        }
-        .q-select {
-          width: 80px;
-        }
-      }
-    }
-    .button-row {
-      margin-top: 16px;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
-    .image_upload_area,
-    .item_setting_area {
-      margin: 16px 0 0 0;
-    }
-    .params_top {
-      gap: 20px;
-    }
-  }
-
-  .wrap_textarea {
-    margin: 8px 0 0 0;
-  }
-  .file-add {
-    margin: 8px 0 0 0;
-  }
-  .caution {
-    margin: 16px 0 0 0;
-    padding: 16px 0 0 0;
-    border-top: 1px solid #cccccc;
-    p {
-      color: $grey-3;
-    }
-  }
-  .handle {
-    text-align: center;
-    cursor: grab;
-  }
-
-  .input_area {
-    margin: 12px 0 0 0;
-  }
-
-  .add_btn_ara {
-    text-align: center;
-    margin: 20px 0 0 0;
-  }
-
-  .confirm_area {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    padding: 25px 0 20px;
-    margin: 20px 0 0 0;
-  }
-
-  .btn_title3 {
-    margin: 2px 0 0 10px;
-    color: $grey-1;
-  }
-
-  .control_box {
-    background-color: #fff;
-    padding: 16px 12px 12px;
-    border-radius: 10px;
-    margin: 12px 0 0 0;
-  }
-
-  .page_list {
-    margin: 12px 0 0 0;
-  }
-
-  .page_btn {
-    @include flex_row_between;
-    border: 1px solid #e5e5e5;
-    border-radius: 8px;
-    padding: 12px;
-    height: 40px;
-    margin: 0 0 4px 0;
-    &.page_btn_on {
-      color: #fff;
-      background-color: #2e9dd1;
-      border: 1px solid #257ea7;
-      .page_text {
-        color: $white;
-      }
-    }
-  }
-
-  .page_add_btn {
-    border: 1px solid #e5e5e5;
-    border-radius: 8px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 93px;
-  }
-
-  .page_text {
-    color: $grey-3;
-    font-size: 12px;
-    line-height: 12px;
-    font-weight: 700;
-  }
-
-  .top_btn {
-    position: absolute;
-    right: 0;
-    top: 60%;
-  }
-
-  .file-add {
-    @include flex_row_start;
-    gap: 20px;
-  }
-
-  .edit_complete {
-    margin: 20px 0 0 0;
-    padding: 10px 25px 25px;
-    border-radius: 10px;
-    background-color: #fff;
-    .item_input {
-      margin: 12px 0 0 0;
-      .caution_desc {
-        &:first-of-type {
-          margin-top: 12px;
-        }
-        margin-top: 8px;
-      }
-      .q-pa-md {
-        width: 400px;
-        padding: 0;
-      }
-    }
-    .brand-card {
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      padding: 16px;
-      > div {
-        padding: 0;
-      }
-    }
-
-    .brand-logo {
-      max-width: 100%;
-      height: auto;
-    }
-  }
-  .title_with_tag {
-    @include flex_row_start;
-    gap: 10px;
-  }
-
-  .title_tag {
-    padding: 3px 10px;
-    background-color: $grey-3;
-    color: $white;
-    border-radius: 4px;
-    line-height: 16px;
-  }
-
-  .title_text {
-    &::after {
-      content: '*';
-      display: inline-block;
-      color: $orange;
-      margin: 0 0 0 4px;
-    }
-  }
-
-  .icons {
-    margin-left: auto;
-  }
-
-  .content_title_wrap {
-    @include flex_row_between;
-    gap: 10px;
-    margin: 0 0 16px 0;
-  }
-
-  .preview_content {
-    color: $grey-3;
-  }
-
-  .radio_area {
-    margin: 8px 0 0 0;
-  }
-
-  .icon_star_score {
-    margin: 0 8px 0 0;
-    width: 24px;
-    height: 24px;
-  }
-}
 
 .respons_card.type_alarm {
   width: 340px !important;

@@ -192,12 +192,18 @@ export enum DatetimeType {
   DateTime = 3, // 날짜시간형
 }
 
-/* 설문조사 기본 설정값 enum */
-export enum SurveyOption {
-  PagePerSurvey = 10, // 설문조사당 최대 페이지
-  QueryPerPage = 50, // 페이지당 최대 설문 갯수
-  ItemPerQuery = 50, // 설문당 최대 항목 갯수
-  VisibleTopButtonNumber = 3, // 탑 버튼 보이는 기준
+/* 설문조사 기본 설정값 config */
+export const SurveyOption = {
+  PagePerSurvey : 10, // 설문조사당 최대 페이지
+  QueryPerPage : 50, // 페이지당 최대 설문 갯수
+  ItemPerQuery : 50, // 설문당 최대 항목 갯수
+  VisibleTopButtonNumber : 3, // 탑 버튼 보이는 기준
+}
+
+/* 첨부 파일 크기 제한 config */
+export const MaxFileSize = {
+  Byte: 10*1024*1024, // 10mb
+  Number: 10
 }
 
 

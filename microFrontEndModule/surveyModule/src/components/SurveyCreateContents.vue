@@ -316,31 +316,6 @@ const getImageUrlForDisplay = (fileKey: string): string => {
 .icon-trash-can {
   cursor: pointer;
 }
-.total_wrap {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 24px;
-}
-.wrap_table_box {
-  margin: 0 !important;
-}
-.lh_area {
-  flex: 1;
-  position: relative;
-}
-.rh_area {
-  width: 129px;
-}
-
-
-.set_params {
-  margin: 20px 0 0 0;
-  padding: 10px 25px 25px;
-  border-radius: 10px;
-  background-color: #fff;
-}
 
 .wrap_textarea {
   margin: 8px 0 0 0;
@@ -356,92 +331,9 @@ const getImageUrlForDisplay = (fileKey: string): string => {
     color: $grey-3;
   }
 }
-.handle {
-  text-align: center;
-  cursor: grab;
-}
-
-.input_area {
-  margin: 12px 0 0 0;
-}
-
-.add_btn_ara {
-  text-align: center;
-  margin: 20px 0 0 0;
-}
-
-.confirm_area {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  padding: 25px 0 20px;
-  margin: 20px 0 0 0;
-}
-
-.btn_title3 {
-  margin: 2px 0 0 10px;
-  color: $grey-1;
-}
-
-.control_box {
-  background-color: #fff;
-  padding: 16px 12px 12px;
-  border-radius: 10px;
-  margin: 12px 0 0 0;
-}
-
-.page_list {
-  margin: 12px 0 0 0;
-}
-
-.page_btn {
-  @include flex_row_between;
-  border: 1px solid #e5e5e5;
-  border-radius: 8px;
-  padding: 12px;
-  height: 40px;
-  margin: 0 0 4px 0;
-  &.page_btn_on {
-    color: #fff;
-    background-color: #2e9dd1;
-    border: 1px solid #257ea7;
-    .page_text {
-      color: $white;
-    }
-  }
-}
-
-.page_add_btn {
-  border: 1px solid #e5e5e5;
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 93px;
-}
-
-.page_text {
-  color: $grey-3;
-  font-size: 12px;
-  line-height: 12px;
-  font-weight: 700;
-}
-
-.top_btn {
-  position: absolute;
-  right: 0;
-  top: 60%;
-}
 
 .file-add {
   @include flex_row_start;
-}
-
-.icons {
-  margin-left: auto;
 }
 
 .set_contents {

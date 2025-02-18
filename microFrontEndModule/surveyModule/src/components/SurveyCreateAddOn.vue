@@ -226,73 +226,8 @@ defineExpose({
 </script>
 
 <style lang="scss" scoped>
-
-
 .page_btn, .page_add_icon, .top_btn {
  cursor: pointer;
-}
-.total_wrap {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 24px;
-}
-.wrap_table_box {
-  margin: 0 !important;
-}
-.lh_area {
-  flex: 1;
-  position: relative;
-}
-.rh_area {
-  width: 129px;
-}
-
-
-.set_params {
-  margin: 20px 0 0 0;
-  padding: 10px 25px 25px;
-  border-radius: 10px;
-  background-color: #fff;
-}
-
-.wrap_textarea {
-  margin: 8px 0 0 0;
-}
-.file-add {
-  margin: 8px 0 0 0;
-}
-.caution {
-  margin: 16px 0 0 0;
-  padding: 16px 0 0 0;
-  border-top: 1px solid #cccccc;
-  p {
-    color: $grey-3;
-  }
-}
-.handle {
-  text-align: center;
-  cursor: grab;
-}
-
-.input_area {
-  margin: 12px 0 0 0;
-}
-
-.add_btn_ara {
-  text-align: center;
-  margin: 20px 0 0 0;
-}
-
-.confirm_area {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  padding: 25px 0 20px;
-  margin: 20px 0 0 0;
 }
 
 .btn_title3 {
@@ -353,30 +288,5 @@ defineExpose({
   border-radius: 10px;
   border: #2c3e50 2px solid;
   opacity: .8;
-}
-
-.file-add {
-  @include flex_row_start;
-}
-
-.icons {
-  margin-left: auto;
-}
-
-.set_contents {
-  padding: 25px;
-  border-radius: 10px;
-  background-color: #fff;
-  h4 {
-    font-size: 16px;
-    font-weight: bold;
-    margin-bottom: 16px;
-  }
-}
-
-.content_title_wrap {
-  @include flex_row_between;
-  gap: 10px;
-  margin: 0 0 16px 0;
 }
 </style>
