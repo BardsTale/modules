@@ -11,7 +11,7 @@
           v-model="surveyType"
           :disable="[SurveyStatus.Drafting, SurveyStatus.Temp, SurveyStatus.NotStarted].indexOf(props.surveyStat) === -1"
           :options="surveyTypeOptions"
-          label="설명형태"
+          label="질문형태"
           emit-value
           map-options
           dense
